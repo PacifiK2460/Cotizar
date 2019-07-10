@@ -3,20 +3,13 @@ from tkinter import messagebox
 
 def siguiente1(Large,Alto,Ancho):
 
-    opcion = lista.get()
-
-    window.iconify()
-
-    messagebox.askokcancel(message="Se cotizará una " + opcion.lower() + ".\n Largo: " + str(Large) + ".\n Alto: " + str(Alto) + ".\n Ancho: " + str(Ancho) + ".\n", title="Cotizar")
- 
+    messagebox.askokcancel("Test","Jala")
     
-def siguiente():
+def siguiente(lista):
 
     opcion = lista.get()
 
     if opcion == 'Caja Seca':
-
-        window.quit()
 
         root = Tk()
         root.title("Caja seca")
@@ -29,6 +22,8 @@ def siguiente():
         x = (root.winfo_screenwidth() // 2) - (width // 2) 
         y = (root.winfo_screenheight() // 2) - (height // 2) 
         root.geometry('{}x{}+{}+{}'.format(width, height, x, y)) 
+
+        root.focus_force()
 
         large = IntVar()
         largeNo = Label(root,text="Largo: ",font="Bold").grid(row=0,column=0)
@@ -45,11 +40,8 @@ def siguiente():
 
         salir = Button(root,text="Salir",fg="Red",command=root.quit).place(x=85,y=100)
 
-
-
         root.mainloop()
     else:
-        window.iconify()
 
         root = Tk()
         root.title("Plataforma")
@@ -62,6 +54,8 @@ def siguiente():
         x = (root.winfo_screenwidth() // 2) - (width // 2) 
         y = (root.winfo_screenheight() // 2) - (height // 2) 
         root.geometry('{}x{}+{}+{}'.format(width, height, x, y)) 
+
+        root.focus_force()
 
         large = IntVar()
         largeNo = Label(root,text="Largo: ",font="Bold").grid(row=0,column=0)
@@ -76,7 +70,6 @@ def siguiente():
         salir = Button(root,text="Salir",fg="Red",command=root.quit).place(x=75,y=80)
 
         root.mainloop()
-    
 
 window = Tk()
 window.title("Cotizar")
@@ -96,9 +89,9 @@ lista.set("Plataforma")
 w = OptionMenu(window,lista,"Caja Seca","Plataforma")
 w.place(x=23,y=5)
 
-btn = Button(window,text="Siguiente",fg="Green",command=siguiente).place(x=38,y=40)
+btn = Button(window,text="Siguiente",fg="Green",command=siguiente(lista)).place(x=38,y=40)
 salir = Button(window,text="Salir",fg="Red",command=window.quit).place(x=53,y=70)
-    
+        
 window.mainloop()
 
 
