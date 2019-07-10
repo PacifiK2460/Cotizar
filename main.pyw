@@ -73,3 +73,5 @@ altoCaja = Entry(window,textvariable = alto)
 altoCaja.grid(row = 2, column = 1)
 
 window.mainloop()
+
+
