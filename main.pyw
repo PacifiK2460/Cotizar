@@ -20,6 +20,8 @@ def confirmar1():
        altoCaja.grid_forget()
        altoNo.grid_forget()
 
+       #aqui mequede
+
 def cg():
     h = v.get()
     if h == "Plataforma":
