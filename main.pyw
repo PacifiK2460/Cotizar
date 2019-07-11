@@ -5,12 +5,16 @@ from tkinter import messagebox
 def confirmar1(): #Confirma accion delusuar
 
     if v.get() == "Caja seca":
-        if messagebox.askokcancel("Confirmar","Se contizara una {} {} copete.\n\nAlto: {}\nAncho: {}\nLargo: {}".format(v.get().lower(),cop.get().lower(),alto.get(),ancho.get(),large.get())):
-         window.withdraw()
-         test()
+        if c.get() == "camion":
+                if messagebox.askokcancel("Confirmar","Se contizara una {} {} copete para {}.\n\nAlto: {}\nAncho: {}\nLargo: {}".format(v.get().lower(),cop.get().lower(),c.get(),alto.get(),ancho.get(),large.get())):
+                 window.withdraw()
+                 test(cop.get(),c.get())
+        else:
+                if messagebox.askokcancel("Confirmar","Se contizara una {} {} copete para {}.\n\nAlto: {}\nAncho: {}\nLargo: {}".format(v.get().lower(),cop.get().lower(),c.get(),alto.get(),ancho.get(),large.get())):
+                 window.withdraw()
+                 test(cop.get(),c.get())
     elif messagebox.askokcancel("Confirmar","Se contizara una {}.\n\nAncho: {}\nLargo: {}".format(v.get().lower(),ancho.get(),large.get())):
         window.withdraw()
-        test()
             
 
 def cg(): #Actualizar opcion de Alto segun Plataforma o Caja seca
@@ -25,14 +29,22 @@ def cg(): #Actualizar opcion de Alto segun Plataforma o Caja seca
         sinCopete.place(x=122,y=130)
         conCopete.place_forget()
         sinCopete.place_forget()
+
+        op3.place(x=7,y=130)
+        op4.place(x=122,y=130)
+        op3.place_forget()
+        op4.place_forget()
     else:
         altoNo.config(state=NORMAL)
         altoCaja.config(state=NORMAL)
-        btn.place(x=10,y=170)
-        salir.place(x=185,y=170)
-        window.geometry("245x220")        
+        btn.place(x=10,y=190)
+        salir.place(x=185,y=190)
+        window.geometry("245x230")        
         conCopete.place(x=7,y=130)
         sinCopete.place(x=122,y=130)
+
+        op3.place(x=7,y=158)
+        op4.place(x=122,y=158)
 
 
 #Incio de ventana
@@ -55,10 +67,13 @@ op1 = Radiobutton(window,text="Plataforma",font=("Bold",13),variable=v,value="Pl
 op1.place(x=7,y=102)
 op2 = Radiobutton(window,text="Caja seca",font=("Bold",13),variable=v,value="Caja seca",command=cg)
 op2.place(x=122,y=102)
-
 cop = StringVar()
 conCopete = Radiobutton(window,text="Con copete",font=("Bold",13),variable=cop,value="con")
 sinCopete = Radiobutton(window,text="Sin copete",font=("Bold",13),variable=cop,value="sin")
+
+c = StringVar()
+op3 = Radiobutton(window,text="Camion",font=("Bold",13),variable=c,value="camion",command=cg)
+op4 = Radiobutton(window,text="Camioneta",font=("Bold",13),variable=c,value="camioneta",command=cg)
 
 large = StringVar()
 largeNo = Label(window,text="Largo: ",font=("Bold",17))

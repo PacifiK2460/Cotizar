@@ -2,9 +2,11 @@ from tkinter import *
 from tkinter import messagebox
 from docx import *
 from docx import Document
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
 import os
 
-def test():
+def test(cop,cam):
     window = Tk()
     window.title("Cotizando")
     window.geometry("245x180")
@@ -23,14 +25,14 @@ def test():
     print("Numero leido: {}".format(num))
     f.close()
 
-    document = Document()
-    table = document.add_table(rows=23, cols=5)
-    document.save("cotizacion {}.docx".format(num))
-
+    titulo = "Carroceria para caja seca {} copete para {}".format(cop,cam)
+    doc = canvas.Canvas("test {}.pdf".format(num),pagesize=A4)
+    doc.setFont('Helvetica-Bold',15)
+    doc.drawString(40,810,titulo)
+    doc.save()
+    
     os.remove("num.txt")
 
     f = open("num.txt","w")
     f.write("{}".format(num+1))
     f.close()
-    
-
