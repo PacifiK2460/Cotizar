@@ -12,8 +12,14 @@ import os
 
 width, height = A4
 
-def __init__(self):
-    pass
+class Desarollo:
+    def __init__(self, des, price):
+        pass
+    def set_price(self,price):
+        self._price = price
+    def get_des(self,des):
+        return self._des
+
 
 def test(cop,cam,alto,ancho,largo):
     window = Tk()
