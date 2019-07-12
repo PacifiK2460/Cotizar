@@ -12,6 +12,9 @@ import os
 
 width, height = A4
 
+def __init__(self):
+    pass
+
 def test(cop,cam,alto,ancho,largo):
     window = Tk()
     window.title("Carroceria para caja seca {} copete para {}".format(cop,cam))
@@ -55,20 +58,20 @@ def test(cop,cam,alto,ancho,largo):
 
     data = [
         ["                                       MATERIAL","   CANTIDAD","  UNIDAD","     PRECIO","    TOTALES"],
-        ["","","","",""],
-        ["","","","",""],
-        ["","","","",""],
-        ["","","","",""],
-        ["","","","",""],
-        ["","","","",""],
-        ["","","","",""],
-        ["","","","",""],
-        ["","","","",""],
-        ["","","","",""],
-        ["","","","",""],
-        ["","","","",""],
-        ["","","","",""],
-        ["","","","",""],
+        ["Material con lamina y maquila de varios calibres.","","","",""],
+        ["PTR 4x3.","","","",""],
+        ["PTR 4x2.","","","",""],
+        ["Tubula 1''x1''. ","","","",""],
+        ["Tubula 1 ½x 1 ½.","","","",""],
+        ["Lamina aluminio.","","","",""],
+        ["Madera piso 5/4,8,10.","","","",""],
+        ["Triplay 6mm.","","","",""],
+        ["Plafones 4'' led.","","","",""],
+        ["Plafones 2'' led.","","","",""],
+        ["Bragas 5/8.","","","",""],
+        ["Vistas.","","","",""],
+        ["Polin 3x3x8.","","","",""],
+        ["Bisagra y Pasadores.","","","",""],
         ["","","","",""],
         ["","","","",""],
         ["","","","",""],
