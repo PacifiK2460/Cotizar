@@ -5,14 +5,9 @@ from tkinter import messagebox
 def confirmar1(): #Confirma accion delusuar
 
     if v.get() == "Caja seca":
-        if c.get() == "camión":
-                if messagebox.askokcancel("Confirmar","Se contizara una {} {} copete para {}.\n\nAlto: {}\nAncho: {}\nLargo: {}".format(v.get().lower(),cop.get().lower(),c.get(),alto.get(),ancho.get(),large.get())):
-                 window.withdraw()
-                 test(cop.get(),c.get(),alto.get(),ancho.get(),large.get())
-        else:
-                if messagebox.askokcancel("Confirmar","Se contizara una {} {} copete para {}.\n\nAlto: {}\nAncho: {}\nLargo: {}".format(v.get().lower(),cop.get().lower(),c.get(),alto.get(),ancho.get(),large.get())):
-                 window.withdraw()
-                 test(cop.get(),c.get(),alto.get(),ancho.get(),large.get())
+        if messagebox.askokcancel("Confirmar","Se contizara una {} {} copete para {}.\n\nAlto: {}\nAncho: {}\nLargo: {}".format(v.get().lower(),cop.get().lower(),c.get(),alto.get(),ancho.get(),large.get())):
+                window.withdraw()
+                test(cop.get(),c.get(),alto.get(),ancho.get(),large.get())
     elif messagebox.askokcancel("Confirmar","Se contizara una {}.\n\nAncho: {}\nLargo: {}".format(v.get().lower(),ancho.get(),large.get())):
         window.withdraw()
             
