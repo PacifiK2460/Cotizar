@@ -28,14 +28,22 @@ def test(cop,cam,alto,ancho,largo):
     titulo = "Carroceria para caja seca {} copete para {}".format(cop,cam).upper()
     doc = canvas.Canvas("Carroceria para caja seca {} copete para {} ({}).pdf".format(cop,cam,num),pagesize=A4)
     doc.setFont('Helvetica-Bold',15)
-    doc.drawString(40,810,titulo) #Escribe el top del titulo
 
-    doc.drawString(40,770,"MEDIDAS:") #Escribe lasmedidas 
-    doc.drawString(40,750,"LARGO:    {} mts.".format(largo))
-    doc.drawString(40,730,"ANCHO:    {} mts.".format(ancho))
-    doc.drawString(40,710,"ALTO:     {} mts.".format(alto))
+    #Dibuja la carroceria
+    #preserveAspectRatio=True
+    doc.drawImage("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/dibujos/Sin título.png",0,310,preserveAspectRatio=True,width=600)
 
-    doc.drawImage("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/dibujos/caja seca/sin copete/caja seca camion isuzu labuena - copia.bmp",380,610,preserveAspectRatio=True,width=170)
+    doc.drawString(30,810,titulo) #Escribe el top del titulo
+
+    doc.drawString(30,770,"MEDIDAS:") #Escribe lasmedidas 
+    doc.drawString(30,750,"LARGO:")
+    doc.drawString(30,730,"ANCHO:")
+    doc.drawString(30,710,"ALTO:")
+    
+    doc.setFont('Helvetica-Bold',10)
+    doc.drawString(95,750,"{} mts.".format(largo))
+    doc.drawString(95,730,"{} mts.".format(ancho))
+    doc.drawString(95,710,"{} mts.".format(alto))
 
     doc.save()
     
