@@ -5,14 +5,14 @@ from tkinter import messagebox
 def confirmar1(): #Confirma accion delusuar
 
     if v.get() == "Caja seca":
-        if c.get() == "camion":
+        if c.get() == "camión":
                 if messagebox.askokcancel("Confirmar","Se contizara una {} {} copete para {}.\n\nAlto: {}\nAncho: {}\nLargo: {}".format(v.get().lower(),cop.get().lower(),c.get(),alto.get(),ancho.get(),large.get())):
                  window.withdraw()
-                 test(cop.get(),c.get())
+                 test(cop.get(),c.get(),alto.get(),ancho.get(),large.get())
         else:
                 if messagebox.askokcancel("Confirmar","Se contizara una {} {} copete para {}.\n\nAlto: {}\nAncho: {}\nLargo: {}".format(v.get().lower(),cop.get().lower(),c.get(),alto.get(),ancho.get(),large.get())):
                  window.withdraw()
-                 test(cop.get(),c.get())
+                 test(cop.get(),c.get(),alto.get(),ancho.get(),large.get())
     elif messagebox.askokcancel("Confirmar","Se contizara una {}.\n\nAncho: {}\nLargo: {}".format(v.get().lower(),ancho.get(),large.get())):
         window.withdraw()
             
@@ -72,7 +72,7 @@ conCopete = Radiobutton(window,text="Con copete",font=("Bold",13),variable=cop,v
 sinCopete = Radiobutton(window,text="Sin copete",font=("Bold",13),variable=cop,value="sin")
 
 c = StringVar()
-op3 = Radiobutton(window,text="Camion",font=("Bold",13),variable=c,value="camion",command=cg)
+op3 = Radiobutton(window,text="Camión",font=("Bold",13),variable=c,value="camión",command=cg)
 op4 = Radiobutton(window,text="Camioneta",font=("Bold",13),variable=c,value="camioneta",command=cg)
 
 large = StringVar()
