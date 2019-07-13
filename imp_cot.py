@@ -14,27 +14,25 @@ import os
   
 width, height = A4
 
+class Datos:
+    def __init__(self,value):
+        self.set_value(value)
+
+    def set_value(self,value):
+        self._value = value
+
+    def get_value(self):
+        return self._value
+
+class dat(Cop,Cam,Alto2,Ancho,Largo):
+    cop2 = Datos(Cop)
+    cam2 = Datos(Cam)
+    alto2 = Datos(Alto2)
+    ancho2 = Datos(Ancho)
+    largo2 = Datos(Largo)
+
+
 def main():
-
-    f = open("cop.txt","r") #Abre el archivo lee el ultimo numero y lo guarad en una variable
-    cop = f.readline("cop.txt")
-    f.close() #lo cierra
-
-    f = open("cam.txt","r") #Abre el archivo lee el ultimo numero y lo guarad en una variable
-    cam = f.readline("cam.txt")
-    f.close() #lo cierra
-
-    f = open("alto.txt","r") #Abre el archivo lee el ultimo numero y lo guarad en una variable
-    alto = f.readline("alto.txt")
-    f.close() #lo cierra
-
-    f = open("ancho.txt","r") #Abre el archivo lee el ultimo numero y lo guarad en una variable
-    ancho = f.readline("ancho.txt")
-    f.close() #lo cierra
-
-    f = open("largo.txt","r") #Abre el archivo lee el ultimo numero y lo guarad en una variable
-    largo = f.readline("largo.txt")
-    f.close() #lo cierra
 
     titulo = "Carroceria para caja seca {} copete para {}".format(cop,cam).upper()
 

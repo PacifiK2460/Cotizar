@@ -50,29 +50,6 @@ class Application(ttk.Frame):
 
 def imprimir_cot(cop,cam,alto,ancho,largo):
 
-    f = open("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/cop","r+") #Abre el archivo lee el ultimo numero y lo guarad en una variable
-    print("Se ah creado el archivo cap")
-    f.write(cop)
-    print("Se ah escrito en el")
-    f.close() #lo cierra
-    print("Se ah cerrado")
-
-    f = open("cam.txt","r+") #Abre el archivo lee el ultimo numero y lo guarad en una variable
-    f.write(cam)
-    f.close() #lo cierra
-
-    f = open("alto.txt","r+") #Abre el archivo lee el ultimo numero y lo guarad en una variable
-    f.write(alto)
-    f.close() #lo cierra
-    
-    f = open("ancho.txt","r+") #Abre el archivo lee el ultimo numero y lo guarad en una variable
-    f.write(ancho)
-    f.close() #lo cierra
-
-    f = open("largo.txt","r+") #Abre el archivo lee el ultimo numero y lo guarad en una variable
-    f.write(largo)
-    f.close() #lo cierra    
-
     main_window = tk.Tk()
     main_window.resizable(0,0)
     app = Application(main_window)
@@ -80,8 +57,3 @@ def imprimir_cot(cop,cam,alto,ancho,largo):
     process1 = subprocess.call(['python', 'imp_cot.py'])
     app.mainloop()
 
-#os.remove("cop.txt") #Elimina ese archivo de numero
-#s.remove("cam.txt") #Elimina ese archivo de numero
-#os.remove("alto.txt") #Elimina ese archivo de numero
-#os.remove("ancho.txt") #Elimina ese archivo de numero
-#os.remove("largo.txt") #Elimina ese archivo de numero
