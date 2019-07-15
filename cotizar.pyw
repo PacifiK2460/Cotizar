@@ -91,9 +91,9 @@ if __name__ == '__main__':
         altoCaja = Entry(window,textvariable = alto)
         altoCaja.grid(row = 2, column = 1)
 
-        btn = Button(window,text="Siguiente",font=("Bold",13),fg="Green",command=confirmar1)
+        btn = Button(window,text="Siguiente",font=("Bold",13),fg="White",bg ="#4094da",command=confirmar1)
         btn.place(x=10,y=140)
-        salir = Button(window,text="Salir",font=("Bold",13),fg="Red",command=window.quit)
+        salir = Button(window,text="Salir",font=("Bold",13),fg = "White",bg = "#e7513a",command=window.quit)
         salir.place(x=185,y=140)
 
         window.mainloop() #Loop, ventana permanentemente escuchando el user's input

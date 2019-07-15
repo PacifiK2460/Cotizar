@@ -7,14 +7,16 @@ def ver():
     os.system("python cotizar.pyw")
 
 def editar_dat():
-    messagebox.askokcancel("Proceder","Se van a editar los datos.")
+    if messagebox.askokcancel("Proceder","Se van a editar los datos."):
+        master.withdraw()
+        os.system("python edit.pyw")
 
 if __name__ == '__main__':
 
     #Incio de ventana
     master = Tk()
     master.title("Inicio")
-    master.geometry("200x100") #Tam. original: 245x180
+    master.geometry("200x125") #Tam. original: 245x180
     master.resizable(0,0)
     master.iconbitmap("logo.ico")
 
@@ -27,12 +29,12 @@ if __name__ == '__main__':
     s = bool
     h = StringVar()
         
-    cotizar = Button(master,text="Cotizar",font=("Bold",13),fg="Green",command=ver)
-    cotizar.pack()
-    editar = Button(master,text="Editar datos",font=("Bold",13),fg="Green",command=editar_dat)
-    editar.pack()
+    cotizar = Button(master,text="Cotizar",font=("Bold",13),fg="White",bg ="#4094da",command=ver)
+    cotizar.pack(pady=5)
+    editar = Button(master,text="Editar datos",font=("Bold",13),fg="White",bg ="#09cb72",command=editar_dat)
+    editar.pack(pady=5)
 
-    salir = Button(master,text="Salir",font=("Bold",13),fg="Red",command=master.quit)
-    salir.pack()
+    salir = Button(master,text="Salir",font=("Bold",13),fg = "White",bg = "#e7513a",command=master.quit)
+    salir.pack(pady=5)
 
     master.mainloop()

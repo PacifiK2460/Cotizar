@@ -1,17 +1,10 @@
-from tkinter import *
 from tkinter import messagebox
-import tkinter as tk
-from tkinter import ttk
-from docx import *
-from docx import Document
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import Paragraph, Table
 from reportlab.lib import colors
-import subprocess
-from imp_cot import *
 import os
 
 width,height = A4
