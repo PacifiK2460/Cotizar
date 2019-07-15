@@ -1,6 +1,7 @@
 from tkinter import *
 import tkinter as Tkinter
 import tkinter.ttk as ttk
+import csv
 
 def agregar_datos():
     pass
