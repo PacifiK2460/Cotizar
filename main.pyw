@@ -25,10 +25,7 @@ if __name__ == '__main__':
     x = (master.winfo_screenwidth() // 2) - (width // 2) 
     y = (master.winfo_screenheight() // 2) - (height // 2) 
     master.geometry('{}x{}+{}+{}'.format(width, height, x, y))
-        
-    s = bool
-    h = StringVar()
-        
+
     cotizar = Button(master,text="Cotizar",font=("Bold",13),fg="White",bg ="#4094da",command=ver)
     cotizar.pack(pady=5)
     editar = Button(master,text="Editar datos",font=("Bold",13),fg="White",bg ="#09cb72",command=editar_dat)
