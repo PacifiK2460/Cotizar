@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 from cotizar import *
 
+
 def ver():
     master.withdraw()
     os.system("python cotizar.pyw")

@@ -9,6 +9,7 @@ import os
 
 width,height = A4
 
+
 def imprimir_cot(cop,cam,alto,ancho,largo):
 
     titulo = "Carroceria para caja seca {} copete para {}".format(cop,cam).upper()
