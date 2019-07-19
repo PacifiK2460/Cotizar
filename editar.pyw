@@ -3,6 +3,7 @@ from tkinter import *
 import tkinter as Tkinter
 from tkinter import messagebox
 import os
+import time
  
 def actualizar():
     df = pd.read_csv("datos.csv")
@@ -13,9 +14,13 @@ def actualizar():
 
     print("-------------------------------------------------------")
 
-    root.withdraw()
-    messagebox.showinfo("Atención","Datos editados exitosamente.")
-                        #messagebox.showinfo("Atención","Precio de {} actualizado a {}".format(row[0],newprice.grt()))
+    if messagebox.askyesno("Atención","Precio de {} actualizado a {}. ¿Desea actualizar más precios?".format(row[0],price.get())):
+        root.withdraw()
+        time.sleep(1)
+        os.system("python edit.pyw")
+    else:
+        root.withdraw()
+    
 
 
 f = open("idv.txt","r+") #Abre el archivo lee el ultimo numero y lo guarad en una variable
@@ -49,6 +54,7 @@ chg = Label(root,text="El precio actualizado será de: $")
 chg.place(x=0,y=20)
 price = StringVar()
 idBox = Entry(root,textvariable=price)
+idBox.focus_force()
 idBox.place(x=165,y=22)
 
 edit = Button(root,text="Actualizar",font=("Bold",13),fg="White",bg ="#4094da",command=actualizar)
