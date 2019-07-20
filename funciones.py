@@ -11,31 +11,86 @@ width,height = A4
 
 class Material():
     def set_des(self,des):
-        self._des=des
+        self._des = des
     def set_cal(self,cal):
-        self._cal=cal
-    def add_pcs(self,pcs):
-        self._pcs+=pcs
+        self._cal = cal
 
-    def __init__(self):
-        self._pcs = 0
-        
     def get_des(self):
         return self._des
     def get_cal(self):
         return self._cal
+
+    def __init__(self,des,cal):
+        set_des(des)
+        set_cal(cal)
+        self._pcs = 0
+    
+    def add_pcs(self,pcs):
+        self._pcs += pcs
     def get_pcs(self):
         return self._pcs
 
     class Lamina():
+        def set_alto(self,alto):
+            self._alto = alto
+        def set_ancho(self,ancho):
+            self._ancho = ancho
+        def set_we(self,we): #!
+            self._we = we
+
+        def get_alto(self):
+            return self._alto
+        def get_ancho(self):
+            return self._ancho
+        def get_we(self): #!
+            return self._we
+
+        def __init__(self,alto,ancho,we):
+            set_alto(alto)
+            set_ancho(ancho)
+            set_we(we) #!
+            self._lam = 0
+
         def add_lam(self,lam):
             self._lam+=lam
         def get_lam(self):
             return self._lam
-        def __init__(self):
-            self._lam = 0
 
 def imprimir_cot(cop,cam,alto,ancho,largo):
+
+    esquinero = Material(32,14)
+    portaluz = Material(54.5,14)
+    mouter = Material(17.3,12)
+    lateral = Material(28,14)
+    estaca = Material(15.2,14)
+    casquillo = Material(20.5,14)
+    angulo = Material(0,"3/6 x 2")
+    ptr4x2 = Material(0,11)
+    ptr4x3 = Material(0,11)
+    ptr = Material(0,18) #PTR 1 1/2 x 1 1/2
+    tubula = Material(0,8) #TUBULA 1 1/2 x 1 1/2
+    tubula1x1 = Material(0,18)
+
+    # Lamina cal 14
+    lamina4x10c14 = Material()
+    lamina4x10c14.Lamina(122,305,57)
+    lamina4x8c14 = Material()
+    lamina4x8c14.Lamina(122,244,46)
+    lamina3x10c14 = Material()
+    lamina3x10c14.Lamina(91.5,305,43)
+    lamina3x8c14 = Material()
+    lamina3x8c14.Lamina(91.5,244,35)
+
+    # Lamina cal 12
+    lamina4x10c12 = Material()
+    lamina4x10c12.Lamina(122,305,80)
+    lamina4x8c12 = Material()
+    lamina4x8c12.Lamina(122,244,64)
+    lamina3x10c12 = Material()
+    lamina3x10c12.Lamina(91.5,305,60)
+    lamina3x8c12 = Material()
+    lamina3x8c12.Lamina(91.5,244,48)
+
     if cam == "camioneta":
         titulo = "Carroceria para caja seca {} copete para {}".format(cop,cam).upper()
 
