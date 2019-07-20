@@ -7,7 +7,7 @@ import os
 import csv
 
 ancho = 1000
-alto = 230
+alto = 275
 
 class Dato:
     def set_id(self,id):
@@ -55,21 +55,23 @@ x = (window.winfo_screenwidth() // 2) - (width // 2)
 y = (window.winfo_screenheight() // 2) - (height // 2) 
 window.geometry('{}x{}+{}+{}'.format(width, height, x, y))
 
-tabla = ttk.Treeview(columns=('Material','Medidas','Calibre','desarolloarollo','Precio'))
+tabla = ttk.Treeview(columns=('Material','Medidas','Calibre','desarollo','Peso','Precio'))
 
 tabla.heading('#0', text='ID')
 tabla.heading('#1', text='Material')
 tabla.heading('#2', text='Medidas')
 tabla.heading('#3', text='Calibre')
-tabla.heading('#4', text='desarolloarollo')
-tabla.heading('#5', text='Precio')
+tabla.heading('#4', text='desarollo')
+tabla.heading('#5',text="Peso")
+tabla.heading('#6', text='Precio')
 
 tabla.column('#0', minwidth=0,width=50)
-tabla.column('#1', minwidth=0,width=189)
-tabla.column('#2', minwidth=0,width=189)
-tabla.column('#3', minwidth=0,width=189)
-tabla.column('#4', minwidth=0,width=189)
-tabla.column('#5', minwidth=0,width=189)
+tabla.column('#1', minwidth=0,width=420)
+tabla.column('#2', minwidth=0,width=120)
+tabla.column('#3', minwidth=0,width=70)
+tabla.column('#4', minwidth=0,width=70)
+tabla.column('#5', minwidth=0,width=90)
+tabla.column('#6', minwidth=0,width=180)
 
     #Faltan añadir todos los datos, estos son solo Test's
 with open('datos.csv') as csv_file:
@@ -78,7 +80,7 @@ with open('datos.csv') as csv_file:
     maxId = 0
     for row in csv_reader:
         if line_count != 0:
-            tabla.insert("",END,text=row[0],values=(row[1],row[2],row[3],row[4],row[5]))
+            tabla.insert("",END,text=row[0],values=(row[1],row[2],row[3],row[4],row[5],row[6]))
             maxId+=1
         else:
             line_count+=1

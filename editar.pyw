@@ -8,7 +8,7 @@ import time
 def actualizar():
     df = pd.read_csv("datos.csv")
     print("Precio anterior : {}".format(df.at[idv,'Precio']))
-    df.iat[idv,5] = price.get()
+    df.iat[idv,6] = price.get()
     print("Nuevo precio : {}".format(df.at[idv,'Precio']))
     df.to_csv("datos.csv", index=False)
 
@@ -47,7 +47,7 @@ x = (root.winfo_screenwidth() // 2) - (width // 2)
 y = (root.winfo_screenheight() // 2) - (height // 2) 
 root.geometry('{}x{}+{}+{}'.format(width, height, x, y))
 
-txt = Label(root,text="El precio anterior de {} era de ${}".format(row[0],row[4]))
+txt = Label(root,text="El precio anterior de {} era de ${}".format(row[0],row[5]))
 print("Producto: {} | Precio: {}".format(row[0],row[4]))
 txt.place(x=0,y=0)
 chg = Label(root,text="El precio actualizado será de: $")
