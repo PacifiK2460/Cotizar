@@ -9,53 +9,71 @@ import os
 
 width,height = A4
 
+class Lamina():
+        def __init__(self,ancho,largo,we):
+            self.set_ancho(ancho)
+            self.set_largo(largo)
+            self.set_we(we) #!
+            self._lam = 0
+
+        def set_largo(self,largo):
+            self._largo = largo
+        def set_ancho(self,ancho): #Estas nunca mas se van a ejecutar while running
+            self._ancho = ancho
+        def set_we(self,we): #!
+            self._we = we
+
+        def get_largo(self):
+            return self._largo
+        def get_ancho(self):
+            return self._ancho #Estas si
+        def get_we(self): #!
+            return self._we
+
+        def add_lam(self,lam):
+            self._lam+=lam
+        def get_lam(self):  #Y esta
+            return self._lam
+
 class Material():
+    def __init__(self,des,cal):
+        self.set_des(des)
+        self.set_cal(cal)
+        self._pcs = 0
+        self._lam = 0
+
     def set_des(self,des):
         self._des = des
     def set_cal(self,cal):
-        self._cal = cal
+        self._cal = cal   
 
     def get_des(self):
         return self._des
     def get_cal(self):
         return self._cal
-
-    def __init__(self,des,cal):
-        set_des(des)
-        set_cal(cal)
-        self._pcs = 0
     
     def add_pcs(self,pcs):
         self._pcs += pcs
     def get_pcs(self):
         return self._pcs
 
-    class Lamina():
-        def set_alto(self,alto):
-            self._alto = alto
-        def set_ancho(self,ancho):
-            self._ancho = ancho
-        def set_we(self,we): #!
-            self._we = we
+    def lam_can(self,lam):
+        self._lam = lam
+    def lam_type(self,lam_type):
+        self._lam_type = lam_type
 
-        def get_alto(self):
-            return self._alto
-        def get_ancho(self):
-            return self._ancho
-        def get_we(self): #!
-            return self._we
+    def get_lam(self):
+        return self._lam
+    def get_lam_type(self):
+        return self._lam_type
 
-        def __init__(self,alto,ancho,we):
-            set_alto(alto)
-            set_ancho(ancho)
-            set_we(we) #!
-            self._lam = 0
-
-        def add_lam(self,lam):
-            self._lam+=lam
-        def get_lam(self):
-            return self._lam
-
+    def print_all(self):
+        print("     Desarollo = {}".format(self.get_des()))
+        print("     Calibre = {}".format(self.get_cal()))
+        print("     Piezas = {}".format(self.get_pcs()))
+        print("     Numero de laminas = {}".format(self.get_lam()))
+        print("     Tipo de lamina = {}".format(self.get_lam_type()))
+    
 def imprimir_cot(cop,cam,alto,ancho,largo):
 
     esquinero = Material(32,14)
@@ -72,31 +90,62 @@ def imprimir_cot(cop,cam,alto,ancho,largo):
     tubula1x1 = Material(0,18)
 
     # Lamina cal 14
-    lamina4x10c14 = Material()
-    lamina4x10c14.Lamina(122,305,57)
-    lamina4x8c14 = Material()
-    lamina4x8c14.Lamina(122,244,46)
-    lamina3x10c14 = Material()
-    lamina3x10c14.Lamina(91.5,305,43)
-    lamina3x8c14 = Material()
-    lamina3x8c14.Lamina(91.5,244,35)
+    lamina4x10c14 = Lamina(122,305,57)
+    lamina4x8c14 = Lamina(122,244,46)
+    lamina3x10c14 = Lamina(91.5,305,43)
+    lamina3x8c14 = Lamina(91.5,244,35)
 
     # Lamina cal 12
-    lamina4x10c12 = Material()
-    lamina4x10c12.Lamina(122,305,80)
-    lamina4x8c12 = Material()
-    lamina4x8c12.Lamina(122,244,64)
-    lamina3x10c12 = Material()
-    lamina3x10c12.Lamina(91.5,305,60)
-    lamina3x8c12 = Material()
-    lamina3x8c12.Lamina(91.5,244,48)
+    lamina4x10c12 = Lamina(122,305,80)
+    lamina4x8c12 = Lamina(122,244,64)
+    lamina3x10c12 = Lamina(91.5,305,60)
+    lamina3x8c12 = Lamina(91.5,244,48)
+
+    os.system("cls")
+
+    laminas = 0
+    lam_name = ""
+    tipo4x10 = "4x10"
+    tipo3x10 = "3x10"
+
+    #Esquinero [Siempre]
+    esquinero.add_pcs(2)
+    laminas += 1
+    lamina3x10c14.add_lam(laminas)
+    esquinero.lam_can(laminas)
+    esquinero.lam_type("3x10")
+    print("Esquinero :")
+    esquinero.print_all()
+
+    laminas = 0
+    lam_name = ""
+
+    print("\n#####################################################################\n")
+    #Portaluz
+    px1 = lamina4x10c14.get_ancho() / portaluz.get_des()
+    px2 = lamina3x10c14.get_ancho() / portaluz.get_des()
+
+    if px1<px2:
+        portaluz.add_pcs(int(px1))
+        portaluz.lam_type(tipo4x10)
+    else:
+        portaluz.add_pcs(int(px2))
+        portaluz.lam_type(tipo3x10)
+
+    print("Portaluz: ")
+    portaluz.print_all()
+
+    laminas = 0
+    lam_name = ""
+
+    print("\n#####################################################################\n")
+    
 
     if cam == "camioneta":
         titulo = "Carroceria para caja seca {} copete para {}".format(cop,cam).upper()
 
         f = open("num.txt","r+") #Abre el archivo lee el ultimo numero y lo guarad en una variable
         num = int(f.readline())
-        print("Numero leido: {}".format(num))
         f.close() #lo cierra
 
         doc_tittle ="({}) Carroceria para caja seca {} copete para {}.pdf".format(num,cop,cam)
@@ -168,8 +217,6 @@ def imprimir_cot(cop,cam,alto,ancho,largo):
         f = open("num.txt","w") #Crea otro archio con el mismo numero
         f.write("{}".format(num+1)) #Escribo el numero del archivo anterior + 1
         f.close() #Cierra el archivo
-
-        print("Buscando pdf...")
         
         target = doc_tittle
         initial_dir = 'C:/Users/trabajo/Desktop/'
@@ -179,8 +226,6 @@ def imprimir_cot(cop,cam,alto,ancho,largo):
             if target in files:
                 path = os.path.join(root, target)
                 break
-
-        print("PDF encontrado")
 
         if messagebox.askyesno("Atención","Se ah cotizado una carroceria para caja seca {} copete para {} de {}mts. de alto, {}mts. de ancho y {}mts. de largo. \n ¿Desea abrirla?".format(cop,cam,alto,ancho,largo)):
             os.popen(doc_tittle)
