@@ -9,7 +9,8 @@ def confirmar1(): #Confirma accion delusuar
     if v.get() == "Caja seca":
         if messagebox.askokcancel("Confirmar","Se contizara una {} {} copete para {}.\n\nAlto: {}\nAncho: {}\nLargo: {}".format(v.get().lower(),cop.get().lower(),c.get(),alto.get(),ancho.get(),large.get())):
                 window.withdraw()
-                imprimir_cot(cop.get(),c.get(),alto.get(),ancho.get(),large.get())
+                imprimir_cot(cop.get(),c.get(),float(alto.get())*100,float(ancho.get())*100,float(large.get())*100)
+                window.quit()
     elif messagebox.askokcancel("Confirmar","Se contizara una {}.\n\nAncho: {}\nLargo: {}".format(v.get().lower(),ancho.get(),large.get())):
         window.withdraw()
             

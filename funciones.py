@@ -5,6 +5,7 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import Paragraph, Table
 from reportlab.lib import colors
+from colorama import Fore, Back, Style 
 import os
 
 width,height = A4
@@ -36,6 +37,7 @@ class Lamina():
             return self._lam
 
 class Material():
+
     def __init__(self,des,cal):
         self.set_des(des)
         self.set_cal(cal)
@@ -73,9 +75,9 @@ class Material():
         print("     Piezas = {}".format(self.get_pcs()))
         print("     Numero de laminas = {}".format(self.get_lam()))
         print("     Tipo de lamina = {}".format(self.get_lam_type()))
-    
-def imprimir_cot(cop,cam,alto,ancho,largo):
+        print("\n#####################################################################\n")
 
+def imprimir_cot(cop,cam,alto,ancho,largo):
     esquinero = Material(32,14)
     portaluz = Material(54.5,14)
     mouter = Material(17.3,12)
@@ -101,6 +103,8 @@ def imprimir_cot(cop,cam,alto,ancho,largo):
     lamina3x10c12 = Lamina(91.5,305,60)
     lamina3x8c12 = Lamina(91.5,244,48)
 
+    restante = []
+
     os.system("cls")
 
     laminas = 0
@@ -109,39 +113,93 @@ def imprimir_cot(cop,cam,alto,ancho,largo):
     tipo3x10 = "3x10"
 
     #Esquinero [Siempre]
+    print("Esquinero :")
     esquinero.add_pcs(2)
     laminas += 1
     lamina3x10c14.add_lam(laminas)
     esquinero.lam_can(laminas)
     esquinero.lam_type("3x10")
-    print("Esquinero :")
+    restante.append(lamina3x10c14.get_ancho()-(esquinero.get_pcs()*esquinero.get_des()))
+    print("[1]")
     esquinero.print_all()
 
     laminas = 0
     lam_name = ""
 
-    print("\n#####################################################################\n")
     #Portaluz
+    print("Portaluz: ")    
     px1 = lamina4x10c14.get_ancho() / portaluz.get_des()
     px2 = lamina3x10c14.get_ancho() / portaluz.get_des()
 
     if px1<px2:
         portaluz.add_pcs(int(px1))
         portaluz.lam_type(tipo4x10)
+        restante.append(lamina4x10c14.get_ancho()-(portaluz.get_pcs()*portaluz.get_des()))
+        print("[2-1]")
+        
     else:
         portaluz.add_pcs(int(px2))
         portaluz.lam_type(tipo3x10)
+        restante.append(lamina3x10c14.get_ancho()-(portaluz.get_pcs()*portaluz.get_des()))
+        print("[2-2]")
 
-    print("Portaluz: ")
+    portaluz.lam_can(1)
     portaluz.print_all()
 
     laminas = 0
     lam_name = ""
-
-    print("\n#####################################################################\n")
     
+    print("Mouter: ")
+    px = float(largo) / float(lamina4x8c14.get_ancho())
+    px1 = (lamina4x8c14.get_ancho()*px) / float(mouter.get_des())
+    mouter.add_pcs(px1/2)
+    mouter.lam_can(int(px))
+    mouter.lam_type("4x8")
+    restante.append(lamina4x10c14.get_ancho()*mouter.lam_can()-(mouter.get_pcs()*mouter.get_des()))
+    op1 = lamina4x10c14.get_ancho()*mouter.lam_can()
+    op2 = mouter.get_pcs()*mouter.get_des()
+    op3 = lamina4x10c14.get_ancho()-mouter.get_pcs()*mouter.get_des()
+    print("{} - {} =  {}".format(op1,op2,op3))
+    print("[3]")
+    mouter.print_all()
 
-    if cam == "camioneta":
+    #Plataforma
+    print("L. Plataforma: ")
+    
+    l = 0
+    lamas4x10 = 0
+    lamas4x8 = 0
+    # Debuggin [!]
+    while l < largo*2:
+        if l + 305 <= largo*2:
+          #  print("[!] {} + 244 ({}) <<< {}".format(l,l+244,largo*2))
+         #   print("{} + 305 ({}) <= {}".format(l,l+305,largo*2))
+            l += 305
+            lamas4x10 += 1  
+        #    print("L4x10 + 1 ({})".format(lamas4x10))
+        elif l + 244 <= largo:
+       #         print("[!] {} + 305 ({}) >>> {}".format(l,l+305,largo*2))
+      #          print("{} + 244 ({}) <= {}".format(l,l+244,largo*2))
+                l += 244
+                lamas4x8 += 1
+     #           print("L8x10 + 1 ({})".format(lamas4x8))
+        else:
+            break
+
+    #print("Laminas 4x10 = {} \n Laminas 4x8 = {}".format(lamas4x10,lamas4x8))
+    # Debuggin [!]
+    lateral.add_pcs(lamas4x10 + lamas4x8)
+    lateral.lam_can(1)
+    lateral.lam_type("4x10")
+    restante.append(lamina4x10c14.get_ancho()-(lateral.get_pcs()*lateral.get_des()))
+    print("[4]")
+
+    # Estaca
+    for i in reversed(range(0,len(restante))):
+        print("[{}] {}".format(i,restante[i]))
+
+
+    if cam == "camioneta":  
         titulo = "Carroceria para caja seca {} copete para {}".format(cop,cam).upper()
 
         f = open("num.txt","r+") #Abre el archivo lee el ultimo numero y lo guarad en una variable
@@ -228,7 +286,7 @@ def imprimir_cot(cop,cam,alto,ancho,largo):
                 break
 
         if messagebox.askyesno("Atención","Se ah cotizado una carroceria para caja seca {} copete para {} de {}mts. de alto, {}mts. de ancho y {}mts. de largo. \n ¿Desea abrirla?".format(cop,cam,alto,ancho,largo)):
-            os.popen(doc_tittle)
+            os.popen(doc_tittle)  
     else:
         titulo = "Carroceria para caja seca {} copete para {}".format(cop,cam).upper()
 
