@@ -5,7 +5,8 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import Paragraph, Table
 from reportlab.lib import colors
-from colorama import Fore, Back, Style 
+from colorama import Fore, Back, Style
+import math
 import os
 
 width,height = A4
@@ -107,97 +108,126 @@ def imprimir_cot(cop,cam,alto,ancho,largo):
 
     os.system("cls")
 
-    laminas = 0
-    lam_name = ""
-    tipo4x10 = "4x10"
-    tipo3x10 = "3x10"
+    def esquina():  #Esquinero [Siempre]
+        print("Esquinero :")
+        laminas = 0
+        lam_name = ""
+        tipo4x10 = "4x10"
+        tipo3x10 = "3x10"    
+        esquinero.add_pcs(2)
+        laminas += 1
+        lamina3x10c14.add_lam(laminas)
+        esquinero.lam_can(laminas)
+        esquinero.lam_type("3x10")
+        restante.append(lamina3x10c14.get_ancho()-(esquinero.get_pcs()*esquinero.get_des()))
+        print("[1]")
+        esquinero.print_all()
 
-    #Esquinero [Siempre]
-    print("Esquinero :")
-    esquinero.add_pcs(2)
-    laminas += 1
-    lamina3x10c14.add_lam(laminas)
-    esquinero.lam_can(laminas)
-    esquinero.lam_type("3x10")
-    restante.append(lamina3x10c14.get_ancho()-(esquinero.get_pcs()*esquinero.get_des()))
-    print("[1]")
-    esquinero.print_all()
+    def portluz():   #Portaluz
+        print("Portaluz: ")   
+        laminas = 0
+        lam_name = ""
+        tipo4x10 = "4x10"
+        tipo3x10 = "3x10"
+        no_piezas = lamina4x10c14.get_ancho() / portaluz.get_des()
+        px2 = lamina3x10c14.get_ancho() / portaluz.get_des()
 
-    laminas = 0
-    lam_name = ""
-
-    #Portaluz
-    print("Portaluz: ")    
-    px1 = lamina4x10c14.get_ancho() / portaluz.get_des()
-    px2 = lamina3x10c14.get_ancho() / portaluz.get_des()
-
-    if px1<px2:
-        portaluz.add_pcs(int(px1))
-        portaluz.lam_type(tipo4x10)
-        restante.append(lamina4x10c14.get_ancho()-(portaluz.get_pcs()*portaluz.get_des()))
-        print("[2-1]")
-        
-    else:
-        portaluz.add_pcs(int(px2))
-        portaluz.lam_type(tipo3x10)
-        restante.append(lamina3x10c14.get_ancho()-(portaluz.get_pcs()*portaluz.get_des()))
-        print("[2-2]")
-
-    portaluz.lam_can(1)
-    portaluz.print_all()
-
-    laminas = 0
-    lam_name = ""
-    
-    print("Mouter: ")
-    px = float(largo) / float(lamina4x8c14.get_ancho())
-    px1 = (lamina4x8c14.get_ancho()*px) / float(mouter.get_des())
-    mouter.add_pcs(px1/2)
-    mouter.lam_can(int(px))
-    mouter.lam_type("4x8")
-    restante.append(lamina4x10c14.get_ancho()*mouter.lam_can()-(mouter.get_pcs()*mouter.get_des()))
-    op1 = lamina4x10c14.get_ancho()*mouter.lam_can()
-    op2 = mouter.get_pcs()*mouter.get_des()
-    op3 = lamina4x10c14.get_ancho()-mouter.get_pcs()*mouter.get_des()
-    print("{} - {} =  {}".format(op1,op2,op3))
-    print("[3]")
-    mouter.print_all()
-
-    #Plataforma
-    print("L. Plataforma: ")
-    
-    l = 0
-    lamas4x10 = 0
-    lamas4x8 = 0
-    # Debuggin [!]
-    while l < largo*2:
-        if l + 305 <= largo*2:
-          #  print("[!] {} + 244 ({}) <<< {}".format(l,l+244,largo*2))
-         #   print("{} + 305 ({}) <= {}".format(l,l+305,largo*2))
-            l += 305
-            lamas4x10 += 1  
-        #    print("L4x10 + 1 ({})".format(lamas4x10))
-        elif l + 244 <= largo:
-       #         print("[!] {} + 305 ({}) >>> {}".format(l,l+305,largo*2))
-      #          print("{} + 244 ({}) <= {}".format(l,l+244,largo*2))
-                l += 244
-                lamas4x8 += 1
-     #           print("L8x10 + 1 ({})".format(lamas4x8))
+        if no_piezas<px2:
+            portaluz.add_pcs(int(no_piezas))
+            portaluz.lam_type(tipo4x10)
+            restante.append(lamina4x10c14.get_ancho()-(portaluz.get_pcs()*portaluz.get_des()))
+            print("[2-1]")
+            
         else:
-            break
+            portaluz.add_pcs(int(px2))
+            portaluz.lam_type(tipo3x10)
+            restante.append(lamina3x10c14.get_ancho()-(portaluz.get_pcs()*portaluz.get_des()))
+            print("[2-2]")
 
-    #print("Laminas 4x10 = {} \n Laminas 4x8 = {}".format(lamas4x10,lamas4x8))
-    # Debuggin [!]
-    lateral.add_pcs(lamas4x10 + lamas4x8)
-    lateral.lam_can(1)
-    lateral.lam_type("4x10")
-    restante.append(lamina4x10c14.get_ancho()-(lateral.get_pcs()*lateral.get_des()))
-    print("[4]")
+        portaluz.lam_can(1)
+        portaluz.print_all()
 
-    # Estaca
+    def mou(): #Mouter
+        print("Mouter: ")
+        laminas = 0
+        lam_name = ""
+        tipo4x10 = "4x10"
+        tipo3x10 = "3x10"
+        print("[ ! (3) !]")
+        no_laminas = float(largo) / int(lamina4x8c14.get_largo())
+        no_piezas = (lamina4x8c14.get_ancho()*round(no_laminas)) / mouter.get_des()
+        mouter.add_pcs((round(no_piezas)))
+        mouter.lam_can(round(no_laminas))
+        mouter.lam_type("4x8")
+        mouter.print_all()
+
+    def plata(): #Plataforma
+        print("L. Plataforma: ")
+        laminas = 0
+        lam_name = ""
+        tipo4x10 = "4x10"
+        tipo3x10 = "3x10"
+        print("[4]")
+        l = 0
+        lamas4x10 = 0
+        lamas4x8 = 0
+        # Debuggin [!]
+        while l < largo*2:
+            if l + 305 <= largo*2:
+            #  print("[!] {} + 244 ({}) <<< {}".format(l,l+244,largo*2))
+            #   print("{} + 305 ({}) <= {}".format(l,l+305,largo*2))
+                l += 305
+                lamas4x10 += 1  
+            #    print("L4x10 + 1 ({})".format(lamas4x10))
+            elif l + 244 <= largo:
+        #         print("[!] {} + 305 ({}) >>> {}".format(l,l+305,largo*2))
+        #          print("{} + 244 ({}) <= {}".format(l,l+244,largo*2))
+                    l += 244
+                    lamas4x8 += 1
+        #           print("L8x10 + 1 ({})".format(lamas4x8))
+            else:
+                break
+
+        # Debuggin [!]
+        lateral.add_pcs(lamas4x10 + lamas4x8)
+        lateral.lam_can(1)
+        lateral.lam_type("4x10")
+        lateral.print_all()
+        restante.append(lamina4x10c14.get_ancho()-(lateral.get_pcs()*lateral.get_des()))
+
+    def es():# Estaca
+        print("Estaca : ")
+        laminas = 0
+        lam_name = ""
+        tipo4x10 = "4x10"
+        tipo3x10 = "3x10"
+        
+        no_laminas = largo / 244
+        no_laminas1 = int(no_laminas*2)
+        piezas = (122*no_laminas1) / estaca.get_des()
+        estaca.add_pcs(int(piezas))
+        estaca.lam_can(no_laminas1)
+        estaca.lam_type(tipo4x10)
+        restante.append(lamina4x10c14.get_ancho()*estaca.get_lam()-(estaca.get_pcs()*estaca.get_des()))
+        if int(restante[3]) != restante[3]: 
+            estaca.add_pcs(1)
+        else:
+            estaca.add_pcs(-1)
+        estaca.print_all()
+
+    def casq():
+        pass
+
+    esquina()
+    portluz()
+    mou()
+    plata()
+    es()    
+
     for i in reversed(range(0,len(restante))):
         print("[{}] {}".format(i,restante[i]))
 
+    # -------------  HASTA AQUI ACDABAN LOS TROQUELADOS
 
     if cam == "camioneta":  
         titulo = "Carroceria para caja seca {} copete para {}".format(cop,cam).upper()
