@@ -252,6 +252,9 @@ def imprimir_cot(cop,cam,alto,ancho,largo):
         ptr4x3.add_pcs(t_piezas)
         ptr4x3.print_all()        
 
+    def t1():  # [Incompleto]
+        pass
+
     esquina()
     portluz()
     mou()
@@ -260,7 +263,8 @@ def imprimir_cot(cop,cam,alto,ancho,largo):
     casq()
     ang()
     p4x2()   
-    p4x3() 
+    p4x3()
+    t15()
 
     for i in reversed(range(0,len(restante))):
         print("[!] [{}] [RESTANTES] {}".format(i,restante[i]))
