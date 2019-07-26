@@ -9,6 +9,8 @@ from colorama import Fore, Back, Style
 import math
 import os
 
+restante = []
+
 width,height = A4
 
 class Lamina():
@@ -76,7 +78,9 @@ class Material():
         print("     Piezas = {}".format(self.get_pcs()))
         print("     Numero de laminas = {}".format(self.get_lam()))
         print("     Tipo de lamina = {}".format(self.get_lam_type()))
+        print("     Restante = {}".format(restante[len(restante)-1]))
         print("\n#####################################################################\n")
+
 
 def imprimir_cot(cop,cam,alto,ancho,largo):
     esquinero = Material(32,14)
@@ -104,12 +108,30 @@ def imprimir_cot(cop,cam,alto,ancho,largo):
     lamina3x10c12 = Lamina(91.5,305,60)
     lamina3x8c12 = Lamina(91.5,244,48)
 
-    restante = []
-
     os.system("cls")
 
-    def esquina():  #Esquinero [Siempre]
-        print("Esquinero :")
+    def print_rest():
+        if lamina3x10c12.get_lam() != 0:
+            print("[!] [Info] 3x10 c12 = {}".format(lamina3x10c12.get_lam()))
+        if lamina3x10c14.get_lam() != 0:
+            print("[!] [Info] 3x10 c14 = {}".format(lamina3x10c14.get_lam()))
+        if lamina3x8c12.get_lam() != 0:
+            print("[!] [Info] 3x8 c12 = {}".format(lamina3x8c12.get_lam()))
+        if lamina3x8c14.get_lam() != 0:
+            print("[!] [Info] 3x8 c14 = {}".format(lamina3x8c14.get_lam()))
+        if lamina4x10c12.get_lam() != 0:
+            print("[!] [Info] 4x10 c12 = {}".format(lamina4x10c12.get_lam()))
+        if lamina4x10c14.get_lam() != 0:
+            print("[!] [Info] 4x10 c14 = {}".format(lamina4x10c14.get_lam()))
+        if lamina4x8c12.get_lam() != 0:
+            print("[!] [Info] 4x8 c12 = {}".format(lamina4x8c12.get_lam()))
+        if lamina4x8c14.get_lam() != 0:
+            print("[!] [Info] 4x8 c14 = {}".format(lamina4x8c14.get_lam()))
+
+    #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_--
+
+    def esquina(): #Esquinero [Siempre]
+        print("[1] Esquinero :")
         laminas = 0
         lam_name = ""
         tipo4x10 = "4x10"
@@ -122,11 +144,10 @@ def imprimir_cot(cop,cam,alto,ancho,largo):
         esquinero.lam_type(tipo3x8)
         lamina3x8c14.add_lam(laminas)
         restante.append(lamina3x10c14.get_ancho()-(esquinero.get_pcs()*esquinero.get_des()))
-        print("[1]")
         esquinero.print_all()
 
-    def portluz():   #Portaluz
-        print("Portaluz: ")   
+    def portluz(): #Portaluz
+        print("[2] Portaluz: ")   
         laminas = 0
         lam_name = ""
         tipo4x10 = "4x10"
@@ -152,27 +173,24 @@ def imprimir_cot(cop,cam,alto,ancho,largo):
         portaluz.print_all()
 
     def mou(): #Mouter
-        print("Mouter: ")
+        print("[3] Mouter: ")
         laminas = 0
         lam_name = ""
-        tipo4x10 = "4x10"
         tipo4x8 = "4x8"
-        print("[ ! (3) !]")
         no_laminas = float(largo) / int(lamina4x8c14.get_largo())
         no_piezas = (lamina4x8c14.get_ancho()*round(no_laminas)) / monten.get_des()
         monten.add_pcs((round(no_piezas)))
         monten.lam_can(round(no_laminas))
         monten.lam_type(tipo4x8)
-        lamina4x8c12.add_lam(no_laminas)
+        lamina4x8c12.add_lam(round(no_laminas))
         monten.print_all()
 
     def plata(): #Plataforma
-        print("L. Plataforma: ")
+        print("[4] L. Plataforma: ")
         laminas = 0
         lam_name = ""
         tipo4x10 = "4x10"
         tipo3x10 = "3x10"
-        print("[4]")
         l = 0
         lamas4x10 = 0
         lamas4x8 = 0
@@ -184,7 +202,7 @@ def imprimir_cot(cop,cam,alto,ancho,largo):
                 l += 305
                 lamas4x10 += 1  
             #    print("L4x10 + 1 ({})".format(lamas4x10))
-            elif l + 244 <= largo:
+            elif l + 244 <= largo*2+244 and l+244 >=largo*2:
         #         print("[!] {} + 305 ({}) >>> {}".format(l,l+305,largo*2))
         #          print("{} + 244 ({}) <= {}".format(l,l+244,largo*2))
                     l += 244
@@ -194,21 +212,19 @@ def imprimir_cot(cop,cam,alto,ancho,largo):
                 break
 
         # Debuggin [!]
-        lateral.add_pcs(lamas4x10 + lamas4x8)
-        total = lamas4x10 + lamas4x8 
-        lateral.lam_can(total)
-        lateral.lam_type("--")
-        lamina4x10c14.add_lam(lamas4x10)
-        lamina4x8c14.add_lam(lamas4x8)
-        lateral.print_all()
+        lateral.add_pcs(lamas4x10)
+        lateral.lam_can(1)
+        lateral.lam_type("4x10")
+        lamina4x10c14.add_lam(1)
         restante.append(lamina4x10c14.get_ancho()-(lateral.get_pcs()*lateral.get_des()))
+        lateral.add_pcs(lamas4x8)
+        lateral.print_all()
 
     def es():# Estaca
-        print("Estaca : ")
+        print("[5] Estaca : ")
         laminas = 0
         lam_name = ""
         tipo4x8 = "4x8"
-        tipo3x10 = "3x10"
         
         no_laminas = largo / 244
         no_laminas1 = int(no_laminas*2)
@@ -222,38 +238,66 @@ def imprimir_cot(cop,cam,alto,ancho,largo):
             estaca.add_pcs(1)
         else:
             estaca.add_pcs(-1)
+
         estaca.print_all()
 
-    def casq():
-        tipo4x10 = "4x10"
+    def casq(): #Casquillo
+        print("[6] Casquillo: ")
+        tipo3x10 = "3x10"
 
-        casquillo.add_pcs((largo/3)*2)
-        casquillo.lam_type(tipo4x10)
+        casquillo.add_pcs(int((largo/3)*2/100))
+        casquillo.lam_type(tipo3x10)
         casquillo.lam_can(1)
+        casquillo.print_all()
 
-    def ang():
-        ancho.lam_type("--")
-        angulo.add_pcs(monten.get_pcs()*2)
+    def ang(): #Angulo
+        print("[7] Angulo: ")
+        tipo = "--"
+        angulo.lam_type(tipo)
+        piezas = ((monten.get_pcs()*2)*19)/600
+        parte_decimal, parte_entera = math.modf(piezas)
+        if parte_decimal >= 0.1 and parte_decimal <= 0.5:
+            parte_decimal = 0.5
+        elif parte_decimal >= 0.6 and parte_decimal <= 0.9:
+            parte_decimal = 0
+            parte_entera += 1
+        angulo.add_pcs(parte_entera + parte_decimal)
         angulo.print_all()
 
-    def p4x2():
-        ptr4x2.lam_type("--")
+    def p4x2(): #PTR 4X2    
+        print("[8] PTR 4X2: ")
+        tipo = "--"
+        ptr4x2.lam_type(tipo)
         ptr4x2.add_pcs(1.5)
         ptr4x2.print_all()
 
-    def p4x3():
-        ptr4x3.lam_type("--")
-        ptr4x3.add_pcs(largo*2/600)
+    def p4x3(): #PTR 4X3
+        print("[9] PTR 4X3:   ")
+        tipo = "--"
+        ptr4x3.lam_type(tipo)
+        piezas = largo*2/600
+        parte_decimal, parte_entera = math.modf(piezas)
+        if parte_decimal >= 0.1 and parte_decimal <= 0.5:
+            parte_decimal = 0.5
+        elif parte_decimal >= 0.6 and parte_decimal <= 0.9:
+            parte_decimal = 0
+            parte_entera += 1
+        ptr4x3.add_pcs(parte_entera + parte_decimal)
         ptr4x3.print_all()
 
-    def t15():
-        ptr4x3.lam_type("--")
-        t_piezas = (((((estaca.get_pcs()-5)/2)+1)*(ancho/100))+14)/6
-        ptr4x3.add_pcs(t_piezas)
-        ptr4x3.print_all()        
+    def t15(): #TUBULAR 1 1/5
+        print("[10] Tubular 1 1/2: ")
+        tipo = "--"
+        tubula.lam_type(tipo)
+        t_piezas = ((((((estaca.get_pcs()-5)/2)+1)*(ancho/100))+14)/6)
+        tubula.add_pcs(int(round(t_piezas)))
+        tubula.print_all()        
 
-    def t1():  # [Incompleto]
-        pass
+    def t1():  # [TUBULAR 1X1] [Incompleto]
+        piezas = (((((ancho/2)*3)+(alto-10*3))*2)/600)*2
+        tubula1x1.lam_type("--")
+        tubula1x1.add_pcs(round(piezas))
+        tubula1x1.print_all()
 
     esquina()
     portluz()
@@ -265,28 +309,14 @@ def imprimir_cot(cop,cam,alto,ancho,largo):
     p4x2()   
     p4x3()
     t15()
+    t1()
 
-    for i in reversed(range(0,len(restante))):
+    for i in reversed(range(1,len(restante))):
         print("[!] [{}] [RESTANTES] {}".format(i,restante[i]))
 
-    print("")
+    print("")   
 
-    if lamina3x10c12.get_lam() != 0:
-        print(u"[\u23C3 ] 3x10 c12 = {}".format(lamina3x10c12.get_lam()))
-    if lamina3x10c14.get_lam() != 0:
-        print(u"[\u23C3 ] 3x10 c14 = {}".format(lamina3x10c14.get_lam()))
-    if lamina3x8c12.get_lam() != 0:
-        print(u"[\u23C3 ] 3x8 c12 = {}".format(lamina3x8c12.get_lam()))
-    if lamina3x8c14.get_lam() != 0:
-        print(u"[\u23C3 ] 3x8 c14 = {}".format(lamina3x8c14.get_lam()))
-    if lamina4x10c12.get_lam() != 0:
-        print(u"[\u23C3 ] 4x10 c12 = {}".format(lamina4x10c12.get_lam()))
-    if lamina4x10c14.get_lam() != 0:
-        print(u"[\u23C3 ] 4x10 c14 = {}".format(lamina4x10c14.get_lam()))
-    if lamina4x8c12.get_lam() != 0:
-        print(u"[\u23C3 ] 4x8 c12 = {}".format(lamina4x8c12.get_lam()))
-    if lamina4x8c14.get_lam() != 0:
-        print(u"[\u23C3 ] 4x8 c14 = {}".format(lamina4x8c14.get_lam()))
+    print_rest()
 
     # -------------  HASTA AQUI ACDABAN LOS TROQUELADOS
 
