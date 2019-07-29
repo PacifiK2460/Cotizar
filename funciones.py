@@ -2,11 +2,13 @@ from tkinter import messagebox
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
-from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import Paragraph, Table
 from reportlab.lib import colors
 from colorama import Fore, Back, Style
 import math
+import pandas as pd 
+import locale
+import csv
 import os
 
 restante = []
@@ -72,6 +74,11 @@ class Material():
     def get_lam_type(self):
         return self._lam_type
 
+    def price(self,price):
+        self._price = price
+    def get_price(self):
+        return self._price
+
     def print_all(self):
         print("     Desarollo = {}".format(self.get_des()))
         print("     Calibre = {}".format(self.get_cal()))
@@ -79,10 +86,10 @@ class Material():
         print("     Numero de laminas = {}".format(self.get_lam()))
         print("     Tipo de lamina = {}".format(self.get_lam_type()))
         print("     Restante = {}".format(restante[len(restante)-1]))
-        print("\n#####################################################################\n")
-
+        print("\n#####################################################################\n")  
 
 def imprimir_cot(cop,cam,alto,ancho,largo):
+
     esquinero = Material(32,14)
     portaluz = Material(54.5,14)
     monten = Material(17.3,12)
@@ -269,6 +276,11 @@ def imprimir_cot(cop,cam,alto,ancho,largo):
         tipo = "--"
         ptr4x2.lam_type(tipo)
         ptr4x2.add_pcs(1.5)
+
+        data = pd.read_csv("datos.csv")
+        row = data.loc[18] #Este es el id de cada material
+        ptr4x2.price(row[6])   
+
         ptr4x2.print_all()
 
     def p4x3(): #PTR 4X3
@@ -282,6 +294,10 @@ def imprimir_cot(cop,cam,alto,ancho,largo):
         elif parte_decimal >= 0.6 and parte_decimal <= 0.9:
             parte_decimal = 0
             parte_entera += 1
+
+        data = pd.read_csv("datos.csv")
+        row = data.loc[17] #Este es el id de cada material
+        ptr4x3.price(row[6])
         ptr4x3.add_pcs(parte_entera + parte_decimal)
         ptr4x3.print_all()
 
@@ -291,12 +307,23 @@ def imprimir_cot(cop,cam,alto,ancho,largo):
         tubula.lam_type(tipo)
         t_piezas = ((((((estaca.get_pcs()-5)/2)+1)*(ancho/100))+14)/6)
         tubula.add_pcs(int(round(t_piezas)))
+
+        data = pd.read_csv("datos.csv")
+        row = data.loc[30] #Este es el id de cada material
+
+        tubula.price(row[6])
+
         tubula.print_all()        
 
     def t1():  # [TUBULAR 1X1] [Incompleto]
         piezas = (((((ancho/2)*3)+(alto-10*3))*2)/600)*2
         tubula1x1.lam_type("--")
         tubula1x1.add_pcs(round(piezas))
+
+        data = pd.read_csv("datos.csv")
+        row = data.loc[29] #Este es el id de cada material
+        tubula1x1.price(row[6])
+
         tubula1x1.print_all()
 
     esquina()
@@ -311,6 +338,30 @@ def imprimir_cot(cop,cam,alto,ancho,largo):
     t15()
     t1()
 
+    lam_peso_total = (lamina3x10c12.get_lam()*lamina3x10c12.get_we()) + (lamina3x10c14.get_lam()*lamina3x10c14.get_we()) + (lamina3x8c12.get_lam()*lamina3x8c12.get_we()) + (lamina3x8c14.get_lam()*lamina3x8c14.get_we())
+    lam_peso_total += (lamina4x10c12.get_lam()*lamina4x10c12.get_we()) + (lamina4x10c14.get_lam()*lamina4x10c14.get_we()) + (lamina4x8c12.get_lam()*lamina4x8c12.get_we()) + (lamina4x8c14.get_lam()*lamina4x8c14.get_we())
+
+    laminas = [lamina4x10c14.get_lam(),lamina4x8c14.get_lam(),lamina3x10c14.get_lam(),lamina3x8c14.get_lam(),lamina4x10c12.get_lam(),lamina4x8c12.get_lam(),lamina3x10c12.get_lam(),lamina3x8c12.get_lam()]
+
+    lam_precio_total = 0
+
+    with open('datos.csv') as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=',')
+        line_count = 0
+        maxId = 0
+        for row in csv_reader:
+            if line_count != 0:
+                #lam_precio_total += float(row[6])*float(laminas[i])
+                if maxId < 8:
+                    precio = row[6]
+                    lam_precio_total += float(precio)*float(laminas[maxId])
+                    maxId+=1
+                else:
+                    break
+            else:
+                line_count+=1
+
+
     for i in reversed(range(1,len(restante))):
         print("[!] [{}] [RESTANTES] {}".format(i,restante[i]))
 
@@ -318,186 +369,153 @@ def imprimir_cot(cop,cam,alto,ancho,largo):
 
     print_rest()
 
+    # Funciones de la parte superior
+
+    def camioneta_sin():
+            titulo = "Carroceria para caja seca {} copete para {}".format(cop,cam).upper()
+
+            f = open("num.txt","r+") #Abre el archivo lee el ultimo numero y lo guarad en una variable
+            num = int(f.readline())
+            f.close() #lo cierra
+
+            doc_tittle ="({}) Carroceria para caja seca {} copete para {}.pdf".format(num,cop,cam)
+
+            doc = canvas.Canvas(doc_tittle,pagesize=A4)
+            doc.setFont('Helvetica-Bold',13)
+
+            #Dibuja la carroceria
+            #preserveAspectRatio=True
+            doc.drawImage("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/dibujos/Sin título.png",0,350,preserveAspectRatio=True,width=600)
+
+            doc.drawString(30,825,titulo) #Escribe el top del titulo
+
+            '''
+            Aquí se van a poner las funciones de cada troquelado
+            '''
+
+            Alto = 790
+
+            doc.drawString(30,Alto,"MEDIDAS:") #Escribe las medidas 
+            doc.drawString(30,Alto-20,"LARGO:")
+            doc.drawString(30,Alto-40,"ANCHO:")
+            doc.drawString(30,Alto-60,"ALTO:")
+            
+            doc.setFont('Helvetica-Bold',10)
+            doc.drawString(95,Alto-20,"{} mts.".format(largo/100))
+            doc.drawString(95,Alto-40,"{} mts.".format(ancho/100))
+            doc.drawString(95,Alto-60,"{} mts.".format(alto/100))
+
+            doc.drawString(190,Alto+4,"{}".format(tubula1x1.get_pcs()))
+
+            doc.drawString(350,Alto-45,"{}".format(esquinero.get_pcs()))
+            doc.drawString(325,Alto-63,"({}) {}".format(esquinero.get_lam(),esquinero.get_lam_type()))
+
+            doc.drawString(130,Alto-147,"{}".format(portaluz.get_pcs()))
+            doc.drawString(105,Alto-165,"({}) {}".format(portaluz.get_lam(),portaluz.get_lam_type()))
+
+            doc.drawString(260,Alto-147,"{}".format(monten.get_pcs()))
+            doc.drawString(235,Alto-165,"({}) {}".format(monten.get_lam(),monten.get_lam_type()))
+
+            doc.drawString(390,Alto-147,"{}".format(lateral.get_pcs()))
+            doc.drawString(365,Alto-165,"({}) {}".format(lateral.get_lam(),lateral.get_lam_type()))
+
+            doc.drawString(550,Alto-147,"{}".format(estaca.get_pcs()))
+            doc.drawString(525,Alto-165,"({}) {}".format(estaca.get_lam(),estaca.get_lam_type()))
+
+            doc.drawString(150,Alto-256,"{}".format(casquillo.get_pcs()))
+            doc.drawString(125,Alto-274,"({}) {}".format(casquillo.get_lam(),casquillo.get_lam_type()))
+
+            doc.drawString(280,Alto-259,"{}".format(angulo.get_pcs()))
+
+            doc.drawString(350,Alto-305,"{}".format(ptr4x3.get_pcs()))
+
+            doc.drawString(440,Alto-305,"{}".format(ptr4x2.get_pcs()))
+
+            doc.drawString(530,Alto-295,"{}".format(tubula.get_pcs()))
+
+            locale.setlocale( locale.LC_ALL, '' )
+
+            data = pd.read_csv("datos.csv")
+            row = data.loc[65] #Este es el id de cada material
+            toldo_precio = float(row[6])
+
+            data = [
+                ["                                       MATERIAL","   CANTIDAD","  UNIDAD","     PRECIO","    TOTALES"],
+                ["Material con lamina y maquila de varios calibres.","{} KG.".format(lam_peso_total)," ","","{}".format(locale.currency(math.ceil(lam_precio_total),grouping=True))],
+                ["Maquila.",lam_peso_total,"","$ 4.06","{}".format(locale.currency(math.ceil(lam_peso_total*4.06),grouping=True))],
+                ["PTR 4x3.",ptr4x3.get_pcs(),"","{}".format(locale.currency(float(ptr4x3.get_price()),grouping=True)),"{}".format(locale.currency(math.ceil(float(ptr4x3.get_pcs())*float(ptr4x3.get_price())),grouping=True))],   
+                ["PTR 4x2.",ptr4x2.get_pcs(),"","{}".format(locale.currency(float(ptr4x2.get_price()),grouping=True)),"{}".format(locale.currency(math.ceil(float(ptr4x2.get_pcs())*float(ptr4x2.get_price())),grouping=True))],
+                ["Tubula 1''x1''. ",tubula1x1.get_pcs(),"","{}".format(locale.currency(float(tubula1x1.get_price()),grouping=True)),"{}".format(locale.currency(math.ceil(float(tubula1x1.get_pcs())*float(tubula1x1.get_price())),grouping=True))],
+                ["Tubula 1 ½x 1 ½.",tubula.get_pcs(),"","{}".format(locale.currency(float(tubula.get_price()),grouping=True)),"{}".format(locale.currency(math.ceil(float(tubula.get_pcs())*float(tubula.get_price())),grouping=True))],
+                ["Lamina aluminio (toldo).","{}x244".format(float(largo) + 50),"","{}".format(locale.currency(toldo_precio,grouping=True)),""],
+                ["Madera piso 5/4,8,10.","","","",""],
+                ["Triplay 6mm.","","","",""],
+                ["Plafones 4'' led.","","","",""],
+                ["Plafones 2'' led.","","","",""],
+                ["Bragas 5/8.","","","",""],
+                ["Vistas.","","","",""],
+                ["Polin 3x3x8.","","","",""],
+                ["Bisagra y Pasadores.","","","",""],
+                ["","","","",""],
+                ["","","","",""],
+                ["","","","",""],
+                ["","","","",""],
+                ["","","","",""],
+                ["","","","",""],
+                ["","","","",""],
+                ["","","","",""],
+                ["","","","",""]
+                ]
+
+            table = Table(data, colWidths=[270,80,60,80,80])
+
+
+            table.setStyle(TableStyle([
+                                ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
+                                ('BOX', (0,0), (-1,-1), 0.25, colors.black),
+                                ]))
+
+            table.wrapOn(doc, width, height)
+            table.drawOn(doc,10,10)
+
+            doc.save()
+            
+            os.remove("num.txt") #Elimina ese archivo de numero
+
+            f = open("num.txt","w") #Crea otro archio con el mismo numero
+            f.write("{}".format(num+1)) #Escribo el numero del archivo anterior + 1
+            f.close() #Cierra el archivo
+            
+            target = doc_tittle
+            initial_dir = 'C:/Users/trabajo/Desktop/'
+
+            path = ''
+            for root, _, files in os.walk(initial_dir):
+                if target in files:
+                    path = os.path.join(root, target)
+                    break
+
+            if messagebox.askyesno("Atención","Se ah cotizado una carroceria para caja seca {} copete para {} de {}mts. de alto, {}mts. de ancho y {}mts. de largo. \n ¿Desea abrirla?".format(cop,cam,alto,ancho,largo)):
+                os.popen(doc_tittle)
+
+    def camioneta_con():
+        pass
+
+    def camion_sin():
+        pass
+
+    def camion_con():
+        pass
+
     # -------------  HASTA AQUI ACDABAN LOS TROQUELADOS
 
     if cam == "camioneta":  
-        titulo = "Carroceria para caja seca {} copete para {}".format(cop,cam).upper()
-
-        f = open("num.txt","r+") #Abre el archivo lee el ultimo numero y lo guarad en una variable
-        num = int(f.readline())
-        f.close() #lo cierra
-
-        doc_tittle ="({}) Carroceria para caja seca {} copete para {}.pdf".format(num,cop,cam)
-
-        doc = canvas.Canvas(doc_tittle,pagesize=A4)
-        doc.setFont('Helvetica-Bold',13)
-
-        #Dibuja la carroceria
-        #preserveAspectRatio=True
-        doc.drawImage("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/dibujos/Sin título.png",0,350,preserveAspectRatio=True,width=600)
-
-        doc.drawString(30,825,titulo) #Escribe el top del titulo
-
-        Alto = 790
-
-        doc.drawString(30,Alto,"MEDIDAS:") #Escribe las medidas 
-        doc.drawString(30,Alto-20,"LARGO:")
-        doc.drawString(30,Alto-40,"ANCHO:")
-        doc.drawString(30,Alto-60,"ALTO:")
-        
-        doc.setFont('Helvetica-Bold',10)
-        doc.drawString(95,Alto-20,"{} mts.".format(largo))
-        doc.drawString(95,Alto-40,"{} mts.".format(ancho))
-        doc.drawString(95,Alto-60,"{} mts.".format(alto))
-
-        data = [
-            ["                                       MATERIAL","   CANTIDAD","  UNIDAD","     PRECIO","    TOTALES"],
-            ["Material con lamina y maquila de varios calibres.","","","",""],
-            ["PTR 4x3.","","","",""],
-            ["PTR 4x2.","","","",""],
-            ["Tubula 1''x1''. ","","","",""],
-            ["Tubula 1 ½x 1 ½.","","","",""],
-            ["Lamina aluminio.","","","",""],
-            ["Madera piso 5/4,8,10.","","","",""],
-            ["Triplay 6mm.","","","",""],
-            ["Plafones 4'' led.","","","",""],
-            ["Plafones 2'' led.","","","",""],
-            ["Bragas 5/8.","","","",""],
-            ["Vistas.","","","",""],
-            ["Polin 3x3x8.","","","",""],
-            ["Bisagra y Pasadores.","","","",""],
-            ["","","","",""],
-            ["","","","",""],
-            ["","","","",""],
-            ["","","","",""],
-            ["","","","",""],
-            ["","","","",""],
-            ["","","","",""],
-            ["","","","",""],
-            ["","","","",""],
-            ["","","","",""]
-            ]
-
-        table = Table(data, colWidths=[270,80,60,80,80])
-
-
-        table.setStyle(TableStyle([
-                            ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
-                            ('BOX', (0,0), (-1,-1), 0.25, colors.black),
-                            ]))
-
-        table.wrapOn(doc, width, height)
-        table.drawOn(doc,10,10)
-
-        doc.save()
-        
-        os.remove("num.txt") #Elimina ese archivo de numero
-
-        f = open("num.txt","w") #Crea otro archio con el mismo numero
-        f.write("{}".format(num+1)) #Escribo el numero del archivo anterior + 1
-        f.close() #Cierra el archivo
-        
-        target = doc_tittle
-        initial_dir = 'C:/Users/trabajo/Desktop/'
-
-        path = ''
-        for root, _, files in os.walk(initial_dir):
-            if target in files:
-                path = os.path.join(root, target)
-                break
-
-        if messagebox.askyesno("Atención","Se ah cotizado una carroceria para caja seca {} copete para {} de {}mts. de alto, {}mts. de ancho y {}mts. de largo. \n ¿Desea abrirla?".format(cop,cam,alto,ancho,largo)):
-            os.popen(doc_tittle)  
+        if cop == "sin":
+            camioneta_sin()
+        else:
+            camioneta_con()
     else:
-        titulo = "Carroceria para caja seca {} copete para {}".format(cop,cam).upper()
-
-        f = open("num.txt","r+") #Abre el archivo lee el ultimo numero y lo guarad en una variable
-        num = int(f.readline())
-        print("Numero leido: {}".format(num))
-        f.close() #lo cierra
-
-        doc_tittle ="Carroceria para caja seca {} copete para {} ({}).pdf".format(cop,cam,num)
-
-        doc = canvas.Canvas(doc_tittle,pagesize=A4)
-        doc.setFont('Helvetica-Bold',13)
-
-        #Dibuja la carroceria
-        #preserveAspectRatio=True
-        doc.drawImage("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/dibujos/Sin título.png",0,350,preserveAspectRatio=True,width=600)
-
-        doc.drawString(30,825,titulo) #Escribe el top del titulo
-
-        Alto = 790
-
-        doc.drawString(30,Alto,"MEDIDAS:") #Escribe las medidas 
-        doc.drawString(30,Alto-20,"LARGO:")
-        doc.drawString(30,Alto-40,"ANCHO:")
-        doc.drawString(30,Alto-60,"ALTO:")
-        
-        doc.setFont('Helvetica-Bold',10)
-        doc.drawString(95,Alto-20,"{} mts.".format(largo))
-        doc.drawString(95,Alto-40,"{} mts.".format(ancho))
-        doc.drawString(95,Alto-60,"{} mts.".format(alto))
-
-        data = [
-            ["                                       MATERIAL","   CANTIDAD","  UNIDAD","     PRECIO","    TOTALES"],
-            ["Material con lamina y maquila de varios calibres.","","","",""],
-            ["PTR 4x3.","","","",""],
-            ["PTR 4x2.","","","",""],
-            ["Tubula 1''x1''. ","","","",""],
-            ["Tubula 1 ½x 1 ½.","","","",""],
-            ["Lamina aluminio.","","","",""],
-            ["Madera piso 5/4,8,10.","","","",""],
-            ["Triplay 6mm.","","","",""],
-            ["Plafones 4'' led.","","","",""],
-            ["Plafones 2'' led.","","","",""],
-            ["Bragas 5/8.","","","",""],
-            ["Vistas.","","","",""],
-            ["Polin 3x3x8.","","","",""],
-            ["Bisagra y Pasadores.","","","",""],
-            ["","","","",""],
-            ["","","","",""],
-            ["","","","",""],
-            ["","","","",""],
-            ["","","","",""],
-            ["","","","",""],
-            ["","","","",""],
-            ["","","","",""],
-            ["","","","",""],
-            ["","","","",""]
-            ]
-
-        table = Table(data, colWidths=[270,80,60,80,80])
-
-
-        table.setStyle(TableStyle([
-                            ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
-                            ('BOX', (0,0), (-1,-1), 0.25, colors.black),
-                            ]))
-
-        table.wrapOn(doc, width, height)
-        table.drawOn(doc,10,10)
-
-        doc.save()
-        
-        os.remove("num.txt") #Elimina ese archivo de numero
-
-        f = open("num.txt","w") #Crea otro archio con el mismo numero
-        f.write("{}".format(num+1)) #Escribo el numero del archivo anterior + 1
-        f.close() #Cierra el archivo
-
-        print("Buscando pdf...")
-        
-        target = doc_tittle
-        initial_dir = 'C:/Users/trabajo/Desktop/'
-
-        path = ''
-        for root, _, files in os.walk(initial_dir):
-            if target in files:
-                path = os.path.join(root, target)
-                break
-
-        print("PDF encontrado")
-
-        if messagebox.askyesno("Atención","Se ah cotizado una carroceria para caja seca {} copete para {} de {}mts. de alto, {}mts. de ancho y {}mts. de largo. \n ¿Desea abrirla?".format(cop,cam,alto,ancho,largo)):
-            os.popen(doc_tittle)
+        if cop == "sin":
+            camion_sin()
+        else:
+            camion_con()

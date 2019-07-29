@@ -3,7 +3,6 @@ from tkinter import *
 import tkinter as Tkinter
 from tkinter import messagebox
 import os
-import time
  
 def actualizar():
     df = pd.read_csv("datos.csv")
@@ -16,7 +15,6 @@ def actualizar():
 
     if messagebox.askyesno("Atención","Precio de {} actualizado a {}. ¿Desea actualizar más precios?".format(row[0],price.get())):
         root.withdraw()
-        time.sleep(1)
         os.system("python edit.pyw")
     else:
         root.withdraw()

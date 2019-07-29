@@ -13,7 +13,6 @@ def editar_dat():
         os.system("python edit.pyw")
 
 if __name__ == '__main__':
-
     #Incio de ventana
     master = Tk()
     master.title("Inicio")
