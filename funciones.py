@@ -88,6 +88,36 @@ class Material():
         print("     Restante = {}".format(restante[len(restante)-1]))
         print("\n#####################################################################\n")  
 
+class Tablon():
+    def __init__(self,t_ancho,t_largo):
+        self.set_ancho(t_ancho)
+        self.set_largo(t_largo)
+
+    def set_ancho(t_ancho):
+        self._ancho = t_ancho
+    def set_largo(t_largo):
+        self._largo = t_largo
+
+    def get_ancho(self):
+        return self._t_ancho
+    def get_largo(self):
+        return self._t_largo
+
+class Madera():
+    def __init__(self,m_ancho,m_largo):
+        self.set_ancho(m_ancho)
+        self.set_largo(m_largo)
+
+    def set_ancho(m_ancho):
+        self._ancho = m_ancho
+    def set_largo(m_largo):
+        self._largo = m_largo
+
+    def get_ancho(self):
+        return self._m_ancho
+    def get_largo(self):
+        return self._m_largo
+
 def imprimir_cot(cop,cam,alto,ancho,largo):
 
     esquinero = Material(32,14)
@@ -269,6 +299,10 @@ def imprimir_cot(cop,cam,alto,ancho,largo):
             parte_decimal = 0
             parte_entera += 1
         angulo.add_pcs(parte_entera + parte_decimal)
+        
+        data = pd.read_csv("datos.csv")
+        row = data.loc[22]
+        angulo.price(row[6])
         angulo.print_all()
 
     def p4x2(): #PTR 4X2    
@@ -447,8 +481,9 @@ def imprimir_cot(cop,cam,alto,ancho,largo):
                 ["PTR 4x2.",ptr4x2.get_pcs(),"","{}".format(locale.currency(float(ptr4x2.get_price()),grouping=True)),"{}".format(locale.currency(math.ceil(float(ptr4x2.get_pcs())*float(ptr4x2.get_price())),grouping=True))],
                 ["Tubula 1''x1''. ",tubula1x1.get_pcs(),"","{}".format(locale.currency(float(tubula1x1.get_price()),grouping=True)),"{}".format(locale.currency(math.ceil(float(tubula1x1.get_pcs())*float(tubula1x1.get_price())),grouping=True))],
                 ["Tubula 1 ½x 1 ½.",tubula.get_pcs(),"","{}".format(locale.currency(float(tubula.get_price()),grouping=True)),"{}".format(locale.currency(math.ceil(float(tubula.get_pcs())*float(tubula.get_price())),grouping=True))],
-                ["Lamina aluminio (toldo).","{}x244".format(float(largo) + 50),"","{}".format(locale.currency(toldo_precio,grouping=True)),""],
-                ["Madera piso 5/4,8,10.","","","",""],
+                ["Lamina aluminio (toldo).","260x{}".format(float(largo) + 50),"","{}".format(locale.currency(toldo_precio,grouping=True)),"{}".format(locale.currency(math.ceil(float(toldo_precio)*float((largo + 50)/100)),grouping=True))],
+                ["Angulo",angulo.get_pcs(),"","{}".format(locale.currency(float(angulo.get_price()),grouping=True)),"{}".format(locale.currency(math.ceil(float(angulo.get_pcs())*float(angulo.get_price())),grouping=True))],
+                ["Madera piso .","","","",""], # Completar
                 ["Triplay 6mm.","","","",""],
                 ["Plafones 4'' led.","","","",""],
                 ["Plafones 2'' led.","","","",""],
@@ -463,12 +498,10 @@ def imprimir_cot(cop,cam,alto,ancho,largo):
                 ["","","","",""],
                 ["","","","",""],
                 ["","","","",""],
-                ["","","","",""],
                 ["","","","",""]
                 ]
 
             table = Table(data, colWidths=[270,80,60,80,80])
-
 
             table.setStyle(TableStyle([
                                 ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
