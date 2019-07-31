@@ -118,7 +118,7 @@ class Madera():
     def get_largo(self):
         return self._m_largo
 
-def imprimir_cot(cop,cam,alto,ancho,largo):
+def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
 
     esquinero = Material(32,14)
     portaluz = Material(54.5,14)
@@ -145,6 +145,9 @@ def imprimir_cot(cop,cam,alto,ancho,largo):
     lamina3x10c12 = Lamina(91.5,305,60)
     lamina3x8c12 = Lamina(91.5,244,48)
 
+    #Tipo de madera
+    
+
     os.system("cls")
 
     def print_rest():
@@ -166,6 +169,8 @@ def imprimir_cot(cop,cam,alto,ancho,largo):
             print("[!] [Info] 4x8 c14 = {}".format(lamina4x8c14.get_lam()))
 
     #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_--
+
+
 
     def esquina(): #Esquinero [Siempre]
         print("[1] Esquinero :")
@@ -372,6 +377,12 @@ def imprimir_cot(cop,cam,alto,ancho,largo):
     t15()
     t1()
 
+    def t_piso():
+        if t_precio == "normal":
+            pass
+        else:
+            pass
+
     lam_peso_total = (lamina3x10c12.get_lam()*lamina3x10c12.get_we()) + (lamina3x10c14.get_lam()*lamina3x10c14.get_we()) + (lamina3x8c12.get_lam()*lamina3x8c12.get_we()) + (lamina3x8c14.get_lam()*lamina3x8c14.get_we())
     lam_peso_total += (lamina4x10c12.get_lam()*lamina4x10c12.get_we()) + (lamina4x10c14.get_lam()*lamina4x10c14.get_we()) + (lamina4x8c12.get_lam()*lamina4x8c12.get_we()) + (lamina4x8c14.get_lam()*lamina4x8c14.get_we())
 
@@ -406,7 +417,7 @@ def imprimir_cot(cop,cam,alto,ancho,largo):
     # Funciones de la parte superior
 
     def camioneta_sin():
-            titulo = "Carroceria para caja seca {} copete para {}".format(cop,cam).upper()
+            titulo = "Carroceria para caja seca {} copete para {} ({})".format(cop,cam,t_precio).upper()
 
             f = open("num.txt","r+") #Abre el archivo lee el ultimo numero y lo guarad en una variable
             num = int(f.readline())
@@ -528,7 +539,7 @@ def imprimir_cot(cop,cam,alto,ancho,largo):
                     path = os.path.join(root, target)
                     break
 
-            if messagebox.askyesno("Atención","Se ah cotizado una carroceria para caja seca {} copete para {} de {}mts. de alto, {}mts. de ancho y {}mts. de largo. \n ¿Desea abrirla?".format(cop,cam,alto,ancho,largo)):
+            if messagebox.askyesno("Atención","Se ah cotizado una carroceria para caja seca {} copete para {} de {}mts. de alto, {}mts. de ancho y {}mts. de largo. \n ¿Desea abrirla?".format(cop,cam,alto/100,ancho/100,largo/100)):
                 os.popen(doc_tittle)
 
     def camioneta_con():
