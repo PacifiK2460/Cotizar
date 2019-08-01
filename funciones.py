@@ -93,9 +93,9 @@ class Tablon():
         self.set_ancho(t_ancho)
         self.set_largo(t_largo)
 
-    def set_ancho(t_ancho):
+    def set_ancho(self,t_ancho):
         self._ancho = t_ancho
-    def set_largo(t_largo):
+    def set_largo(self,t_largo):
         self._largo = t_largo
 
     def get_ancho(self):
@@ -117,6 +117,16 @@ class Madera():
         return self._m_ancho
     def get_largo(self):
         return self._m_largo
+
+class Plafones():
+    def __init__(self, precio):
+        self.set_price(precio)
+
+    def set_price(self,price):
+        self._price = price
+
+    def get_price(self):
+        return self._price
 
 def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
 
@@ -145,8 +155,9 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
     lamina3x10c12 = Lamina(91.5,305,60)
     lamina3x8c12 = Lamina(91.5,244,48)
 
-    #Tipo de madera
-    
+    #Plafones
+    plafones4 = Plafones(149)
+    plafones2 = Plafones(35)    
 
     os.system("cls")
 
@@ -379,9 +390,32 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
 
     def t_piso():
         if t_precio == "normal":
-            pass
+            piso6x8 = Tablon(6,8)
+            piso6x10 = Tablon(6,10)
+            piso6x12 = Tablon(6,12)
+            psio6x14 = Tablon(6,14)
+            piso6x16 = Tablon(6,16)
+
+            piso8x8 = Tablon(8,8)
+            piso8x10 = Tablon(8,10)
+            piso8x12 = Tablon(8,12)
+            psio8x14 = Tablon(8,14)
+            piso8x16 = Tablon(8,16)
+
         else:
-            pass
+            piso6x8 = Madera(6,8)
+            piso6x10 = Madera(6,10)
+            piso6x12 = Madera(6,12)
+            psio6x14 = Madera(6,14)
+            piso6x16 = Madera(6,16)
+
+            piso8x8 = Madera(8,8)
+            piso8x10 = Madera(8,10)
+            piso8x12 = Madera(8,12)
+            psio8x14 = Madera(8,14)
+            piso8x16 = Madera(8,16)
+
+    t_piso()
 
     lam_peso_total = (lamina3x10c12.get_lam()*lamina3x10c12.get_we()) + (lamina3x10c14.get_lam()*lamina3x10c14.get_we()) + (lamina3x8c12.get_lam()*lamina3x8c12.get_we()) + (lamina3x8c14.get_lam()*lamina3x8c14.get_we())
     lam_peso_total += (lamina4x10c12.get_lam()*lamina4x10c12.get_we()) + (lamina4x10c14.get_lam()*lamina4x10c14.get_we()) + (lamina4x8c12.get_lam()*lamina4x8c12.get_we()) + (lamina4x8c14.get_lam()*lamina4x8c14.get_we())
@@ -484,24 +518,65 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
             row = data.loc[65] #Este es el id de cada material
             toldo_precio = float(row[6])
 
+            polin8 = largo/243.84
+            print("largo / 243.84 = {}".format(polin8))
+            parte_decimal_p8, parte_entera_p8 = math.modf(polin8)
+            print("P8D: {} | P8E: {}".format(parte_decimal_p8,parte_entera_p8))
+            polin16 = largo/487.68
+            print("largo / 487.68 = {}".format(polin16))
+            parte_decimal_p16, parte_entera_p16 = math.modf(polin16)
+            print("P16D: {} | P16E: {}".format(parte_decimal_p16,parte_entera_p16))
+            
+
+            if parte_entera_p8 < parte_entera_p16 and parte_decimal_p8 < parte_decimal_p16:
+                polin = "3x3x8"
+                p_precio = 75
+                p_usar = polin8
+                print("P = {}\n PP = {}\nPU = {}".format(polin,p_precio,p_usar))
+            elif parte_entera_p8 < parte_entera_p16 and parte_decimal_p8 > parte_decimal_p16:
+                polin = "3x3x8"
+                p_precio = 75
+                p_usar = polin8
+                print("P = {}\n PP = {}\nPU = {}".format(polin,p_precio,p_usar))
+            elif parte_entera_p8 > parte_entera_p16 and parte_decimal_p8 > parte_decimal_p16:
+                polin = "3x3x16"
+                p_precio = 85
+                p_usar = polin16
+                print("P = {}\n PP = {}\nPU = {}".format(polin,p_precio,p_usar))
+            elif parte_entera_p8 > parte_entera_p16 and parte_decimal_p8 < parte_decimal_p16:
+                polin = "3x3x16"
+                p_precio = 85
+                p_usar = polin16
+                print("P = {}\n PP = {}\nPU = {}".format(polin,p_precio,p_usar))
+            else:
+                messagebox.showerror("Erro","Impossible.")
+            
+            tot = [lam_precio_total,lam_peso_total*4.06,float(ptr4x2.get_pcs())*float(ptr4x2.get_price()),float(tubula1x1.get_pcs())*float(tubula1x1.get_price()),float(tubula.get_pcs())*float(tubula.get_price()),float(toldo_precio)*float((largo + 50)/100),float(angulo.get_pcs())*float(angulo.get_price()),((round((largo/122)*3)*295)),(plafones4.get_price()*6),((plafones2.get_price()*(((largo/100)-1)*2)+4)),((((largo/100)-1)*2)*110),2500,math.ceil(p_usar*2)*p_precio,1560]
+            total = 0
+
+            for i in range(0,len(tot)):
+                total += tot[i]
+
+            print(len(tot))
             data = [
                 ["                                       MATERIAL","   CANTIDAD","  UNIDAD","     PRECIO","    TOTALES"],
-                ["Material con lamina y maquila de varios calibres.","{} KG.".format(lam_peso_total)," ","","{}".format(locale.currency(math.ceil(lam_precio_total),grouping=True))],
-                ["Maquila.",lam_peso_total,"","$ 4.06","{}".format(locale.currency(math.ceil(lam_peso_total*4.06),grouping=True))],
-                ["PTR 4x3.",ptr4x3.get_pcs(),"","{}".format(locale.currency(float(ptr4x3.get_price()),grouping=True)),"{}".format(locale.currency(math.ceil(float(ptr4x3.get_pcs())*float(ptr4x3.get_price())),grouping=True))],   
-                ["PTR 4x2.",ptr4x2.get_pcs(),"","{}".format(locale.currency(float(ptr4x2.get_price()),grouping=True)),"{}".format(locale.currency(math.ceil(float(ptr4x2.get_pcs())*float(ptr4x2.get_price())),grouping=True))],
-                ["Tubula 1''x1''. ",tubula1x1.get_pcs(),"","{}".format(locale.currency(float(tubula1x1.get_price()),grouping=True)),"{}".format(locale.currency(math.ceil(float(tubula1x1.get_pcs())*float(tubula1x1.get_price())),grouping=True))],
-                ["Tubula 1 ½x 1 ½.",tubula.get_pcs(),"","{}".format(locale.currency(float(tubula.get_price()),grouping=True)),"{}".format(locale.currency(math.ceil(float(tubula.get_pcs())*float(tubula.get_price())),grouping=True))],
-                ["Lamina aluminio (toldo).","260x{}".format(float(largo) + 50),"","{}".format(locale.currency(toldo_precio,grouping=True)),"{}".format(locale.currency(math.ceil(float(toldo_precio)*float((largo + 50)/100)),grouping=True))],
-                ["Angulo",angulo.get_pcs(),"","{}".format(locale.currency(float(angulo.get_price()),grouping=True)),"{}".format(locale.currency(math.ceil(float(angulo.get_pcs())*float(angulo.get_price())),grouping=True))],
-                ["Madera piso .","","","",""], # Completar
-                ["Triplay 6mm.","","","",""],
-                ["Plafones 4'' led.","","","",""],
-                ["Plafones 2'' led.","","","",""],
-                ["Bragas 5/8.","","","",""],
-                ["Vistas.","","","",""],
-                ["Polin 3x3x8.","","","",""],
-                ["Bisagra y Pasadores.","","","",""],
+                ["Material con lamina y maquila de varios calibres.","{} KG.".format(lam_peso_total)," ","","{}".format(locale.currency(math.ceil(tot[0]),grouping=True))],
+                ["Maquila.",lam_peso_total,"","$ 4.06","{}".format(locale.currency(math.ceil(tot[1]),grouping=True))],
+                ["PTR 4x2.",ptr4x2.get_pcs(),"","{}".format(locale.currency(float(ptr4x2.get_price()),grouping=True)),"{}".format(locale.currency(math.ceil(tot[2]),grouping=True))],
+                ["Tubula 1''x1''. ",tubula1x1.get_pcs(),"","{}".format(locale.currency(float(tubula1x1.get_price()),grouping=True)),"{}".format(locale.currency(math.ceil(tot[3]),grouping=True))],
+                ["Tubula 1 ½x 1 ½.",tubula.get_pcs(),"","{}".format(locale.currency(float(tubula.get_price()),grouping=True)),"{}".format(locale.currency(math.ceil(tot[4]),grouping=True))],
+                ["Lamina aluminio (toldo).","260x{}".format(float(largo) + 50),"","{}".format(locale.currency(toldo_precio,grouping=True)),"{}".format(locale.currency(math.ceil(tot[5]),grouping=True))],
+                ["Angulo",angulo.get_pcs(),"","{}".format(locale.currency(float(angulo.get_price()),grouping=True)),"{}".format(locale.currency(math.ceil(tot[6]),grouping=True))],
+                # [COMPLETAR]
+                ["Madera piso .","","","",""], 
+                # [COMPLETAR]
+                ["Triplay 6mm.",round((largo/122)*3),"","{}".format(locale.currency(295)),"{}".format(locale.currency(tot[7],grouping=True))],
+                ["Plafones 4'' led.",6,"","{}".format(locale.currency(plafones4.get_price(),grouping=True)),"{}".format(locale.currency(tot[8],grouping=True))],
+                ["[!] Plafones 2'' led. [!]","{}".format((largo/100)-1),"","{}".format(locale.currency(plafones2.get_price(),grouping=True)),"{} [!]".format(locale.currency(tot[9]/2,grouping=True))],
+                ["Bragas 5/8.","{}".format(((largo/100)-1)*2),"","{}".format(locale.currency(110,grouping=True)),"{}".format(locale.currency(tot[10],grouping=True))],          
+                ["Vistas.","","","","{}".format(locale.currency(tot[11],grouping=True))],
+                ["Polin {}.".format(polin),"{}".format(math.ceil(p_usar*2)),"","{}".format(locale.currency(p_precio,grouping=True)),"{}".format(locale.currency((math.ceil(tot[12])),grouping=True))],   
+                ["Bisagra y Pasadores.","4","","","{}".format(locale.currency(tot[13]))],
                 ["","","","",""],
                 ["","","","",""],
                 ["","","","",""],
@@ -509,7 +584,7 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
                 ["","","","",""],
                 ["","","","",""],
                 ["","","","",""],
-                ["","","","",""]
+                ["Total","","","","{}".format(locale.currency(total,grouping=True))]
                 ]
 
             table = Table(data, colWidths=[270,80,60,80,80])
@@ -563,3 +638,6 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
             camion_sin()
         else:
             camion_con()
+
+    def final():
+        pass

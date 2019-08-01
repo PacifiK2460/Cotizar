@@ -1,6 +1,8 @@
 from tkinter import *
 from tkinter import messagebox
 from cotizar import *
+import os
+
 
 
 def ver():
