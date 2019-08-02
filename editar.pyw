@@ -5,34 +5,34 @@ from tkinter import messagebox
 import os
  
 def actualizar():
-    df = pd.read_csv("datos.csv")
+    df = pd.read_csv("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/datos.csv")
     print("Precio anterior : {}".format(df.at[idv,'Precio']))
     df.iat[idv,6] = price.get()
     print("Nuevo precio : {}".format(df.at[idv,'Precio']))
-    df.to_csv("datos.csv", index=False)
+    df.to_csv("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/datos.csv", index=False)
 
     print("-------------------------------------------------------")
 
     if messagebox.askyesno("Atención","Precio de {} actualizado a {}. ¿Desea actualizar más precios?".format(row[0],price.get())):
         root.withdraw()
-        os.system("python edit.pyw")
+        os.system("python C:/Users/trabajo/Desktop/Cotizar/cotizar-1/edit.pyw")
     else:
         root.withdraw()
     
 
 
-f = open("idv.txt","r+") #Abre el archivo lee el ultimo numero y lo guarad en una variable
+f = open("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/idv.txt","r+") #Abre el archivo lee el ultimo numero y lo guarad en una variable
 idv = int(f.readline())
 f.close()
 
-os.remove("idv.txt")
+os.remove("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/idv.txt")
 
-data = pd.read_csv("datos.csv",index_col="ID")
+data = pd.read_csv("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/datos.csv",index_col="ID")
 row = data.loc[idv]
 
 root=Tkinter.Tk()
 root.title("Edición de datos.")
-root.iconbitmap("logo.ico")
+root.iconbitmap("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/logo.ico")
 root.geometry("320x90")
 root.resizable(0,0)
 root.grid_rowconfigure(0, weight=1)

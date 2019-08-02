@@ -86,7 +86,7 @@ if __name__ == '__main__':
         window.title("Cotizar")
         window.geometry("245x280") #Tam. original: 245x180
         window.resizable(0,0)
-        window.iconbitmap("logo.ico")
+        window.iconbitmap("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/logo.ico")
 
         #centro de ventana
         width = window.winfo_width() 

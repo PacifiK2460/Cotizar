@@ -7,12 +7,12 @@ import os
 
 def ver():
     master.withdraw()
-    os.system("python cotizar.pyw")
+    os.system("python C:/Users/trabajo/Desktop/Cotizar/cotizar-1/cotizar.pyw")
 
 def editar_dat():
     if messagebox.askokcancel("Proceder","Se van a editar los datos."):
         master.withdraw()
-        os.system("python edit.pyw")
+        os.system("python C:/Users/trabajo/Desktop/Cotizar/cotizar-1/edit.pyw")
 
 if __name__ == '__main__':
     #Incio de ventana
@@ -20,7 +20,7 @@ if __name__ == '__main__':
     master.title("Inicio")
     master.geometry("200x125") #Tam. original: 245x180
     master.resizable(0,0)
-    master.iconbitmap("logo.ico")
+    master.iconbitmap("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/logo.ico")
 
     width = master.winfo_width() 
     height = master.winfo_height() 

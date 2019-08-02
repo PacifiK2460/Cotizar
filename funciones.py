@@ -316,7 +316,7 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
             parte_entera += 1
         angulo.add_pcs(parte_entera + parte_decimal)
         
-        data = pd.read_csv("datos.csv")
+        data = pd.read_csv("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/datos.csv")
         row = data.loc[22]
         angulo.price(row[6])
         angulo.print_all()
@@ -327,7 +327,7 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
         ptr4x2.lam_type(tipo)
         ptr4x2.add_pcs(1.5)
 
-        data = pd.read_csv("datos.csv")
+        data = pd.read_csv("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/datos.csv")
         row = data.loc[18] #Este es el id de cada material
         ptr4x2.price(row[6])   
 
@@ -345,7 +345,7 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
             parte_decimal = 0
             parte_entera += 1
 
-        data = pd.read_csv("datos.csv")
+        data = pd.read_csv("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/datos.csv")
         row = data.loc[17] #Este es el id de cada material
         ptr4x3.price(row[6])
         ptr4x3.add_pcs(parte_entera + parte_decimal)
@@ -358,7 +358,7 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
         t_piezas = ((((((estaca.get_pcs()-5)/2)+1)*(ancho/100))+14)/6)
         tubula.add_pcs(int(round(t_piezas)))
 
-        data = pd.read_csv("datos.csv")
+        data = pd.read_csv("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/datos.csv")
         row = data.loc[30] #Este es el id de cada material
 
         tubula.price(row[6])
@@ -370,7 +370,7 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
         tubula1x1.lam_type("--")
         tubula1x1.add_pcs(round(piezas))
 
-        data = pd.read_csv("datos.csv")
+        data = pd.read_csv("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/datos.csv")
         row = data.loc[29] #Este es el id de cada material
         tubula1x1.price(row[6])
 
@@ -424,7 +424,7 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
 
     lam_precio_total = 0
 
-    with open('datos.csv') as csv_file:
+    with open('C:/Users/trabajo/Desktop/Cotizar/cotizar-1/datos.csv') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         line_count = 0
         maxId = 0
@@ -453,7 +453,7 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
     def camioneta_sin():
             titulo = "Carroceria para caja seca {} copete para {} ({})".format(cop,cam,t_precio).upper()
 
-            f = open("num.txt","r+") #Abre el archivo lee el ultimo numero y lo guarad en una variable
+            f = open("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/num.txt","r+") #Abre el archivo lee el ultimo numero y lo guarad en una variable
             num = int(f.readline())
             f.close() #lo cierra
 
@@ -514,7 +514,7 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
 
             locale.setlocale( locale.LC_ALL, '' )
 
-            data = pd.read_csv("datos.csv")
+            data = pd.read_csv("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/datos.csv")
             row = data.loc[65] #Este es el id de cada material
             toldo_precio = float(row[6])
 
@@ -599,9 +599,9 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
 
             doc.save()
             
-            os.remove("num.txt") #Elimina ese archivo de numero
+            os.remove("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/num.txt") #Elimina ese archivo de numero
 
-            f = open("num.txt","w") #Crea otro archio con el mismo numero
+            f = open("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/num.txt","w") #Crea otro archio con el mismo numero
             f.write("{}".format(num+1)) #Escribo el numero del archivo anterior + 1
             f.close() #Cierra el archivo
             
