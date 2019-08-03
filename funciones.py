@@ -225,17 +225,23 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
 
         portaluz.print_all()
 
-    def mou(): #Mouter
-        print("[3] Mouter: ")
+    def mon(): #Mouter
+        print("[3] Monten: ")
         laminas = 0
         lam_name = ""
         tipo4x8 = "4x8"
-        no_laminas = float(largo) / int(lamina4x8c14.get_largo())
-        no_piezas = (lamina4x8c14.get_ancho()*round(no_laminas)) / monten.get_des()
-        monten.add_pcs((round(no_piezas)))
-        monten.lam_can(round(no_laminas))
+        no_laminas = round(float(largo) / int(lamina4x8c14.get_largo()))
+        #no_piezas = ((lamina4x8c14.get_ancho()*(no_laminas)) / monten.get_des())
+        no_piezas = 0
+        l = largo
+        while l >= 0:
+            l -= 35
+            monten.add_pcs(1)
+            l -= 3.5
+        monten.add_pcs(((no_piezas)))
+        monten.lam_can((no_laminas))
         monten.lam_type(tipo4x8)
-        lamina4x8c12.add_lam(round(no_laminas))
+        lamina4x8c12.add_lam((no_laminas))
         monten.print_all()
 
     def plata(): #Plataforma
@@ -279,18 +285,13 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
         lam_name = ""
         tipo4x8 = "4x8"
         
-        no_laminas = largo / 244
-        no_laminas1 = int(no_laminas*2)
-        piezas = (122*no_laminas1) / estaca.get_des()
-        estaca.add_pcs(int(piezas))
-        estaca.lam_can(no_laminas1)
+        no_laminas = int(largo / 122)
+        piezas = ((no_laminas*3)*2)+3 #Se agrego el math
+        estaca.add_pcs(piezas) #Era int
+        estaca.lam_can(no_laminas)
         estaca.lam_type(tipo4x8)
-        lamina4x8c14.add_lam(no_laminas1)
+        lamina4x8c14.add_lam(no_laminas)
         restante.append(lamina4x10c14.get_ancho()*estaca.get_lam()-(estaca.get_pcs()*estaca.get_des()))
-        if int(restante[3]) != restante[3]: 
-            estaca.add_pcs(1)
-        else:
-            estaca.add_pcs(-1)
 
         estaca.print_all()
 
@@ -378,7 +379,7 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
 
     esquina()
     portluz()
-    mou()
+    mon()
     plata() 
     es()
     casq()
