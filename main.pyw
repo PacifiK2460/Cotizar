@@ -1,6 +1,6 @@
 from tkinter import *
-from cotizar import *
 from tkinter import messagebox
+from cotizar import *
 import os
 
 
