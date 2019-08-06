@@ -5,21 +5,25 @@ from tkinter import messagebox
 import os
  
 def actualizar():
-    df = pd.read_csv("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/datos.csv")
-    print("Precio anterior : {}".format(df.at[idv,'Precio']))
-    df.iat[idv,6] = price.get()
-    print("Nuevo precio : {}".format(df.at[idv,'Precio']))
-    df.to_csv("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/datos.csv", index=False)
+    cont = True
+    try:
+        df = pd.read_csv("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/datos.csv")
+        print("Precio anterior : {}".format(df.at[idv,'Precio']))
+        df.iat[idv,6] = price.get()
+        print("Nuevo precio : {}".format(df.at[idv,'Precio']))
+        df.to_csv("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/datos.csv", index=False)
+    except PermissionError:
+        messagebox.showerror("Error","No se pudo escribir y guardar los cambios hechoes en el archivo, por favor, cierre otras aplicaciones que puedan estar usandolo.")
+        cont = False
 
     print("-------------------------------------------------------")
 
-    if messagebox.askyesno("Atención","Precio de {} actualizado a {}. ¿Desea actualizar más precios?".format(row[0],price.get())):
-        root.withdraw()
-        os.system("python C:/Users/trabajo/Desktop/Cotizar/cotizar-1/edit.pyw")
-    else:
-        root.withdraw()
-    
-
+    if cont == True:
+        if messagebox.askyesno("Atención","Precio de {} actualizado a {}. ¿Desea actualizar más precios?".format(row[0],price.get())):
+            root.withdraw()
+            os.system("python C:/Users/trabajo/Desktop/Cotizar/cotizar-1/edit.pyw")
+        else:
+            root.withdraw()
 
 f = open("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/idv.txt","r+") #Abre el archivo lee el ultimo numero y lo guarad en una variable
 idv = int(f.readline())

@@ -1,12 +1,13 @@
 from tkinter import messagebox
+from tkinter import *
+from tkinter.ttk import *
+
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
-from tkinter import *
-from tkinter.ttk import *
 from reportlab.platypus import Paragraph, Table
 from reportlab.lib import colors
-from colorama import Fore, Back, Style
+
 import math
 import pandas as pd 
 import locale
@@ -621,7 +622,8 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
                 f.close() #Cierra el archivo
 
                 target = doc_tittle
-                initial_dir = 'C:/Users/trabajo/'
+                initial_dir = 'C:/Users/trabajo/Desktop'
+                time.sleep(1.75496731213467)
 
                 path = ''
                 for root, _, files in os.walk(initial_dir):

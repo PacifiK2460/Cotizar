@@ -1,9 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
-from cotizar import *
 import os
-
-
 
 def ver():
     master.withdraw()
@@ -32,7 +29,6 @@ if __name__ == '__main__':
     cotizar.pack(pady=5)
     editar = Button(master,text="Editar datos",font=("Bold",13),fg="White",bg ="#09cb72",command=editar_dat)
     editar.pack(pady=5)
-
     salir = Button(master,text="Salir",font=("Bold",13),fg = "White",bg = "#e7513a",command=master.quit)
     salir.pack(pady=5)
 
