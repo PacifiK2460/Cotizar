@@ -7,6 +7,7 @@ from reportlab.lib.pagesizes import A4
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.platypus import Paragraph, Table
 from reportlab.lib import colors
+from win32com.client import GetObject
 
 import math
 import pandas as pd 
@@ -672,12 +673,25 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
     def process_of_unknown_duration(root):
         cot()
         #print("Done")
-        root.destroy()
         if messagebox.askyesno("Atención","Se ah cotizado una carroceria para caja seca {} copete para {} de {}mts. de alto, {}mts. de ancho y {}mts. de largo. \n ¿Desea abrirla?".format(cop,cam,alto/100,ancho/100,largo/100)):
-            subprocess.popen(abrir_esto.get_titulo(),shell=False)
-            sys.exit(1)
+            
+            WMI = GetObject('winmgmts:')
+            processes = WMI.InstancesOf('Win32_Process')
+
+            for p in WMI.ExecQuery('select * from Win32_Process where Name="cmd.exe"'):
+                p.Properties_('ProcessId').Value
+                os.system("taskkill /pid "+str(p.Properties_('ProcessId').Value))
+            
+                os.popen(abrir_esto.get_titulo())
+            root.destroy()
         else:
-            sys.exit(1)
+            root.destroy()
+            WMI = GetObject('winmgmts:')
+            processes = WMI.InstancesOf('Win32_Process')
+
+            for p in WMI.ExecQuery('select * from Win32_Process where Name="cmd.exe"'):
+                p.Properties_('ProcessId').Value
+                os.system("taskkill /pid "+str(p.Properties_('ProcessId').Value))
 
     # Now define our Main Functions, which will first define root.
     # thn call for call for "task(root)" --- that's your progressbar.

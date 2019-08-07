@@ -104,6 +104,9 @@ if __name__ == '__main__':
         largeBox.grid(row = 0, column = 1)
         largeBox.focus()
 
+        ca = Canvas()
+        ca.update_idletasks()
+        ca.after(1000,window.update_idletasks())
         ancho = StringVar()
         anchoNo = Label(labelframe,text="Ancho: ",font=("Bold",17))
         anchoNo.grid(row=1,column=0)
