@@ -1,15 +1,15 @@
 from tkinter import *
 from tkinter import messagebox
-import os
+import subprocess
 
 def ver():
-    master.withdraw()
-    os.system("python C:/Users/trabajo/Desktop/Cotizar/cotizar-1/cotizar.pyw")
+    master.destroy()
+    subprocess.Popen("python C:/Users/trabajo/Desktop/Cotizar/cotizar-1/cotizar.pyw",shell=False)
 
 def editar_dat():
     if messagebox.askokcancel("Proceder","Se van a editar los datos."):
-        master.withdraw()
-        os.system("python C:/Users/trabajo/Desktop/Cotizar/cotizar-1/edit.pyw")
+        master.destroy()
+        subprocess.Popen("python C:/Users/trabajo/Desktop/Cotizar/cotizar-1/edit.pyw",shell=False)
 
 if __name__ == '__main__':
     #Incio de ventana

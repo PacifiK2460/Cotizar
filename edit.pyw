@@ -16,7 +16,7 @@ if cont == True:
     import tkinter as Tkinter
     import tkinter.ttk as ttk
     import pandas as pd
-    import os
+    import subprocess
 
     ancho = 1000
     alto = 275
@@ -49,8 +49,8 @@ if cont == True:
                 f = open("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/idv.txt","w+")
                 f.write(str(idv))
                 f.close()
-                window.withdraw()
-                os.system("python C:/Users/trabajo/Desktop/Cotizar/cotizar-1/editar.pyw")
+                window.destroy()
+                subprocess.Popen("python C:/Users/trabajo/Desktop/Cotizar/cotizar-1/editar.pyw",shell=False)
 
     window=Tkinter.Tk()
     window.title("Edición de datos.")
@@ -97,7 +97,7 @@ if cont == True:
             else:
                 line_count+=1
 
-    print("1.- " + str(maxId))
+    #print("1.- " + str(maxId))
     objeto.set_max(maxId)
 
 

@@ -11,9 +11,11 @@ from reportlab.lib import colors
 import math
 import pandas as pd 
 import locale
-import csv
+import glob
 import os
+import csv
 import threading
+import subprocess
 import time
 
 restante = []
@@ -83,13 +85,14 @@ class Material():
         return self._price
 
     def print_all(self):
-        print("     Desarollo = {}".format(self.get_des()))
-        print("     Calibre = {}".format(self.get_cal()))
-        print("     Piezas = {}".format(self.get_pcs()))
-        print("     Numero de laminas = {}".format(self.get_lam()))
-        print("     Tipo de lamina = {}".format(self.get_lam_type()))
-        print("     Restante = {}".format(restante[len(restante)-1]))
-        print("\n#####################################################################\n")  
+        pass
+        #print("     Desarollo = {}".format(self.get_des()))
+        #print("     Calibre = {}".format(self.get_cal()))
+        #print("     Piezas = {}".format(self.get_pcs()))
+        #print("     Numero de laminas = {}".format(self.get_lam()))
+        #print("     Tipo de lamina = {}".format(self.get_lam_type()))
+        #print("     Restante = {}".format(restante[len(restante)-1]))
+        #print("\n#####################################################################\n")  
 
 class Tablon():
     def __init__(self,t_ancho,t_largo):
@@ -170,31 +173,29 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
         #Plafones
         plafones4 = Plafones(149)
         plafones2 = Plafones(35)    
-
-        os.system("cls")
-
-        def print_rest():
-            if lamina3x10c12.get_lam() != 0:
-                print("[!] [Info] 3x10 c12 = {}".format(lamina3x10c12.get_lam()))
-            if lamina3x10c14.get_lam() != 0:
-                print("[!] [Info] 3x10 c14 = {}".format(lamina3x10c14.get_lam()))
-            if lamina3x8c12.get_lam() != 0:
-                print("[!] [Info] 3x8 c12 = {}".format(lamina3x8c12.get_lam()))
-            if lamina3x8c14.get_lam() != 0:
-                print("[!] [Info] 3x8 c14 = {}".format(lamina3x8c14.get_lam()))
-            if lamina4x10c12.get_lam() != 0:
-                print("[!] [Info] 4x10 c12 = {}".format(lamina4x10c12.get_lam()))
-            if lamina4x10c14.get_lam() != 0:
-                print("[!] [Info] 4x10 c14 = {}".format(lamina4x10c14.get_lam()))
-            if lamina4x8c12.get_lam() != 0:
-                print("[!] [Info] 4x8 c12 = {}".format(lamina4x8c12.get_lam()))
-            if lamina4x8c14.get_lam() != 0:
-                print("[!] [Info] 4x8 c14 = {}".format(lamina4x8c14.get_lam()))
+ 
+    #    def print_rest():
+    #       if lamina3x10c12.get_lam() != 0:
+    #           #print("[!] [Info] 3x10 c12 = {}".format(lamina3x10c12.get_lam()))
+    #       if lamina3x10c14.get_lam() != 0:
+    #           #print("[!] [Info] 3x10 c14 = {}".format(lamina3x10c14.get_lam()))
+    #       if lamina3x8c12.get_lam() != 0:
+    #           #print("[!] [Info] 3x8 c12 = {}".format(lamina3x8c12.get_lam()))
+    #       if lamina3x8c14.get_lam() != 0:
+    #           #print("[!] [Info] 3x8 c14 = {}".format(lamina3x8c14.get_lam()))
+    #       if lamina4x10c12.get_lam() != 0:
+    #           #print("[!] [Info] 4x10 c12 = {}".format(lamina4x10c12.get_lam()))
+    #       if lamina4x10c14.get_lam() != 0:
+    #           #print("[!] [Info] 4x10 c14 = {}".format(lamina4x10c14.get_lam()))
+    #       if lamina4x8c12.get_lam() != 0:
+    #           #print("[!] [Info] 4x8 c12 = {}".format(lamina4x8c12.get_lam()))
+    #       if lamina4x8c14.get_lam() != 0:
+    #           #print("[!] [Info] 4x8 c14 = {}".format(lamina4x8c14.get_lam()))
 
         #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_--
 
         def esquina(): #Esquinero [Siempre]
-            print("[1] Esquinero :")
+            #print("[1] Esquinero :")
             laminas = 0
             lam_name = ""
             tipo4x10 = "4x10"
@@ -210,7 +211,7 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
             esquinero.print_all()
 
         def portluz(): #Portaluz
-            print("[2] Portaluz: ")   
+            #print("[2] Portaluz: ")   
             laminas = 0
             lam_name = ""
             tipo4x10 = "4x10"
@@ -224,19 +225,19 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
                 portaluz.lam_type(tipo4x10)
                 lamina4x10c14.add_lam(1)
                 restante.append(lamina4x10c14.get_ancho()-(portaluz.get_pcs()*portaluz.get_des()))
-                print("[2-1]")
+                #print("[2-1]")
                 
             else:
                 portaluz.add_pcs(int(px2))
                 portaluz.lam_type(tipo3x10)
                 lamina3x10c14.add_lam(1)
                 restante.append(lamina3x10c14.get_ancho()-(portaluz.get_pcs()*portaluz.get_des()))
-                print("[2-2]")
+                #print("[2-2]")
 
             portaluz.print_all()
 
         def mon(): #Mouter
-            print("[3] Monten: ")
+            #print("[3] Monten: ")
             laminas = 0
             lam_name = ""
             tipo4x8 = "4x8"
@@ -251,7 +252,7 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
                     l -= 3.5
                 else:
                     break
-                print(l)
+                #print(l)
             monten.add_pcs(((no_piezas)))
             monten.lam_can((no_laminas))
             monten.lam_type(tipo4x8)
@@ -259,7 +260,7 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
             monten.print_all()
 
         def plata(): #Plataforma
-            print("[4] L. Plataforma: ")
+            #print("[4] L. Plataforma: ")
             laminas = 0
             lam_name = ""
             tipo4x10 = "4x10"
@@ -270,17 +271,17 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
             # Debuggin [!]
             while l < largo*2:
                 if l + 305 <= largo*2:
-                #  print("[!] {} + 244 ({}) <<< {}".format(l,l+244,largo*2))
-                #   print("{} + 305 ({}) <= {}".format(l,l+305,largo*2))
+                #  #print("[!] {} + 244 ({}) <<< {}".format(l,l+244,largo*2))
+                #   #print("{} + 305 ({}) <= {}".format(l,l+305,largo*2))
                     l += 305
                     lamas4x10 += 1  
-                #    print("L4x10 + 1 ({})".format(lamas4x10))
+                #    #print("L4x10 + 1 ({})".format(lamas4x10))
                 elif l + 244 <= largo*2+244 and l+244 >=largo*2:
-            #         print("[!] {} + 305 ({}) >>> {}".format(l,l+305,largo*2))
-            #          print("{} + 244 ({}) <= {}".format(l,l+244,largo*2))
+            #         #print("[!] {} + 305 ({}) >>> {}".format(l,l+305,largo*2))
+            #          #print("{} + 244 ({}) <= {}".format(l,l+244,largo*2))
                         l += 244
                         lamas4x8 += 1
-            #           print("L8x10 + 1 ({})".format(lamas4x8))
+            #           #print("L8x10 + 1 ({})".format(lamas4x8))
                 else:
                     break
 
@@ -294,7 +295,7 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
             lateral.print_all()
 
         def es():# Estaca
-            print("[5] Estaca : ")
+            #print("[5] Estaca : ")
             laminas = 0
             lam_name = ""
             tipo4x8 = "4x8"
@@ -310,7 +311,7 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
             estaca.print_all()
 
         def casq(): #Casquillo
-            print("[6] Casquillo: ")
+            #print("[6] Casquillo: ")
             tipo3x10 = "3x10"
 
             casquillo.add_pcs(int((largo/3)*2/100))
@@ -319,7 +320,7 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
             casquillo.print_all()
 
         def ang(): #Angulo
-            print("[7] Angulo: ")
+            #print("[7] Angulo: ")
             tipo = "--"
             angulo.lam_type(tipo)
             piezas = ((monten.get_pcs()*2)*19)/600
@@ -337,7 +338,7 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
             angulo.print_all()
 
         def p4x2(): #PTR 4X2    
-            print("[8] PTR 4X2: ")
+            #print("[8] PTR 4X2: ")
             tipo = "--"
             ptr4x2.lam_type(tipo)
             ptr4x2.add_pcs(1.5)
@@ -349,7 +350,7 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
             ptr4x2.print_all()
 
         def p4x3(): #PTR 4X3
-            print("[9] PTR 4X3:   ")
+            #print("[9] PTR 4X3:   ")
             tipo = "--"
             ptr4x3.lam_type(tipo)
             piezas = largo*2/600
@@ -367,7 +368,7 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
             ptr4x3.print_all()
 
         def t15(): #TUBULAR 1 1/5
-            print("[10] Tubular 1 1/2: ")
+            #print("[10] Tubular 1 1/2: ")
             tipo = "--"
             tubula.lam_type(tipo)
             t_piezas = ((((((estaca.get_pcs()-5)/2)+1)*(ancho/100))+14)/6)
@@ -457,11 +458,12 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
 
 
         for i in reversed(range(1,len(restante))):
-            print("[!] [{}] [RESTANTES] {}".format(i,restante[i]))
+            pass
+            #print("[!] [{}] [RESTANTES] {}".format(i,restante[i]))
 
-        print("")   
+        #print("")   
 
-        print_rest()
+        #print_rest()
 
         # Funciones de la parte superior
 
@@ -535,35 +537,35 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
                 toldo_precio = float(row[6])
 
                 polin8 = largo/243.84
-                print("largo / 243.84 = {}".format(polin8))
+                #print("largo / 243.84 = {}".format(polin8))
                 parte_decimal_p8, parte_entera_p8 = math.modf(polin8)
-                print("P8D: {} | P8E: {}".format(parte_decimal_p8,parte_entera_p8))
+                #print("P8D: {} | P8E: {}".format(parte_decimal_p8,parte_entera_p8))
                 polin16 = largo/487.68
-                print("largo / 487.68 = {}".format(polin16))
+                #print("largo / 487.68 = {}".format(polin16))
                 parte_decimal_p16, parte_entera_p16 = math.modf(polin16)
-                print("P16D: {} | P16E: {}".format(parte_decimal_p16,parte_entera_p16))
+                #print("P16D: {} | P16E: {}".format(parte_decimal_p16,parte_entera_p16))
                 
 
                 if parte_entera_p8 < parte_entera_p16 and parte_decimal_p8 < parte_decimal_p16:
                     polin = "3x3x8"
                     p_precio = 75
                     p_usar = polin8
-                    print("P = {}\n PP = {}\nPU = {}".format(polin,p_precio,p_usar))
+                    #print("P = {}\n PP = {}\nPU = {}".format(polin,p_precio,p_usar))
                 elif parte_entera_p8 < parte_entera_p16 and parte_decimal_p8 > parte_decimal_p16:
                     polin = "3x3x8"
                     p_precio = 75
                     p_usar = polin8
-                    print("P = {}\n PP = {}\nPU = {}".format(polin,p_precio,p_usar))
+                    #print("P = {}\n PP = {}\nPU = {}".format(polin,p_precio,p_usar))
                 elif parte_entera_p8 > parte_entera_p16 and parte_decimal_p8 > parte_decimal_p16:
                     polin = "3x3x16"
                     p_precio = 85
                     p_usar = polin16
-                    print("P = {}\n PP = {}\nPU = {}".format(polin,p_precio,p_usar))
+                    #print("P = {}\n PP = {}\nPU = {}".format(polin,p_precio,p_usar))
                 elif parte_entera_p8 > parte_entera_p16 and parte_decimal_p8 < parte_decimal_p16:
                     polin = "3x3x16"
                     p_precio = 85
                     p_usar = polin16
-                    print("P = {}\n PP = {}\nPU = {}".format(polin,p_precio,p_usar))
+                    #print("P = {}\n PP = {}\nPU = {}".format(polin,p_precio,p_usar))
                 else:
                     messagebox.showerror("Erro","Impossible.")
                 
@@ -573,7 +575,7 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
                 for i in range(0,len(tot)):
                     total += tot[i]
 
-                print(len(tot))
+                #print(len(tot))
                 data = [
                     ["                                       MATERIAL","   CANTIDAD","  UNIDAD","     PRECIO","    TOTALES"],
                     ["Material con lamina y maquila de varios calibres.","{} KG.".format(lam_peso_total)," ","","{}".format(locale.currency(math.ceil(tot[0]),grouping=True))],
@@ -615,7 +617,8 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
 
                 doc.save()
                 
-                os.remove("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/num.txt") #Elimina ese archivo de numero
+                for fl in glob.glob("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/num.txt"): #Elimina ese archivo de numero
+                    os.remove(fl)
 
                 f = open("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/num.txt","w") #Crea otro archio con el mismo numero
                 f.write("{}".format(num+1)) #Escribo el numero del archivo anterior + 1
@@ -668,10 +671,13 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
     # Define the process of unknown duration with root as one of the input And once done, add root.quit() at the end.
     def process_of_unknown_duration(root):
         cot()
-        print("Done")
+        #print("Done")
         root.destroy()
         if messagebox.askyesno("Atención","Se ah cotizado una carroceria para caja seca {} copete para {} de {}mts. de alto, {}mts. de ancho y {}mts. de largo. \n ¿Desea abrirla?".format(cop,cam,alto/100,ancho/100,largo/100)):
-            os.popen(abrir_esto.get_titulo())
+            subprocess.popen(abrir_esto.get_titulo(),shell=False)
+            sys.exit(1)
+        else:
+            sys.exit(1)
 
     # Now define our Main Functions, which will first define root.
     # thn call for call for "task(root)" --- that's your progressbar.

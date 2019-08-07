@@ -1,7 +1,6 @@
 from funciones import *
 from tkinter import *
 from tkinter import messagebox
-from os import *
 from main import *
 
 def confirmar1(): #Confirma accion delusuar
@@ -43,11 +42,10 @@ def confirmar1(): #Confirma accion delusuar
         if continuar == True:
                 if v.get() == "Caja seca":
                         if messagebox.askokcancel("Confirmar","Se contizara una {} {} copete para {}. \nTipo de precio: {}.\n\nAlto: {}\nAncho: {}\nLargo: {}".format(v.get().lower(),cop.get().lower(),c.get(),t_precio.get(),alto.get(),ancho.get(),large.get())):
-                                window.withdraw()
+                                window.destroy()
                                 imprimir_cot(cop.get(),c.get(),float(alto.get())*100,float(ancho.get())*100,float(large.get())*100,t_precio.get())
-                                window.quit()
                 elif messagebox.askokcancel("Confirmar","Se contizara una {}. \nTipo de precio: {}.\n\nAncho: {}\nLargo: {}".format(v.get().lower(),t_precio.get(),ancho.get(),large.get())):
-                        window.withdraw()
+                        window.destroy()
             
 
 def cg(): #Actualizar opcion de Alto segun Plataforma o Caja seca

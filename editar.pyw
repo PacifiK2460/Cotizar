@@ -2,6 +2,8 @@ import pandas as pd
 from tkinter import *
 import tkinter as Tkinter
 from tkinter import messagebox
+import glob
+import subprocess
 import os
  
 def actualizar():
@@ -20,16 +22,17 @@ def actualizar():
 
     if cont == True:
         if messagebox.askyesno("Atención","Precio de {} actualizado a {}. ¿Desea actualizar más precios?".format(row[0],price.get())):
-            root.withdraw()
-            os.system("python C:/Users/trabajo/Desktop/Cotizar/cotizar-1/edit.pyw")
+            root.destroy()
+            subprocess.Popen("python C:/Users/trabajo/Desktop/Cotizar/cotizar-1/edit.pyw",shell=False)
         else:
-            root.withdraw()
+            root.destroy()
 
 f = open("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/idv.txt","r+") #Abre el archivo lee el ultimo numero y lo guarad en una variable
 idv = int(f.readline())
 f.close()
 
-os.remove("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/idv.txt")
+for fl in glob.glob("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/idv.txt"):
+    os.remove(fl)
 
 data = pd.read_csv("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/datos.csv",index_col="ID")
 row = data.loc[idv]
