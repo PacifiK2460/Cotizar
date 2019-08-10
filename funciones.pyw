@@ -18,6 +18,7 @@ import os
 import csv
 import threading
 import subprocess
+import shutil
 
 restante = []
 
@@ -680,7 +681,8 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio,t_madera):
         cot()
         #print("Done")
         if messagebox.askyesno("Atención","Se ah cotizado una carroceria para caja seca {} copete para {} de {}mts. de alto, {}mts. de ancho y {}mts. de largo. \n ¿Desea abrirla?".format(cop,cam,alto/100,ancho/100,largo/100)):
-            os.popen(abrir_esto.get_titulo())
+            shutil.move(abrir_esto.get_titulo(),"Cotizaciones")
+            os.popen("{}/Cotizaciones/{}".format(os.getcwd(),abrir_esto.get_titulo()))
             root.destroy()
             WMI = GetObject('winmgmts:')
             processes = WMI.InstancesOf('Win32_Process')
