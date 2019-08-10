@@ -10,6 +10,7 @@ from reportlab.lib import colors
 from win32com.client import GetObject
 
 import math
+import time
 import pandas as pd 
 import locale
 import glob
@@ -17,7 +18,6 @@ import os
 import csv
 import threading
 import subprocess
-import time
 
 restante = []
 
@@ -143,13 +143,18 @@ class Titulo():
 
 abrir_esto = Titulo()
 
-def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
+def imprimir_cot(cop,cam,alto,ancho,largo,t_precio,t_madera):
 
     def cot():
         esquinero = Material(32,14)
         portaluz = Material(54.5,14)
         monten = Material(17.3,12)
-        lateral = Material(28,14)
+        #IF madera:---------------|
+        if t_madera == "madera 1 ½":
+            lateral = Material(28.5,14)#|
+        else:
+            lateral = Material(26.5,14)
+        #IF madera:---------------|
         estaca = Material(15.2,14)
         casquillo = Material(20.5,14)
         angulo = Material(0,"3/6 x 2")
@@ -516,6 +521,7 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
 
                 doc.drawString(390,Alto-147,"{}".format(lateral.get_pcs()))
                 doc.drawString(365,Alto-165,"({}) {}".format(lateral.get_lam(),lateral.get_lam_type()))
+                doc.drawString(387,Alto-102,"{}".format(lateral.get_des()))
 
                 doc.drawString(550,Alto-147,"{}".format(estaca.get_pcs()))
                 doc.drawString(525,Alto-165,"({}) {}".format(estaca.get_lam(),estaca.get_lam_type()))
@@ -570,7 +576,7 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
                 else:
                     messagebox.showerror("Erro","Impossible.")
                 
-                tot = [lam_precio_total,lam_peso_total*4.06,float(ptr4x2.get_pcs())*float(ptr4x2.get_price()),float(tubula1x1.get_pcs())*float(tubula1x1.get_price()),float(tubula.get_pcs())*float(tubula.get_price()),float(toldo_precio)*float((largo + 50)/100),float(angulo.get_pcs())*float(angulo.get_price()),((round((largo/122)*3)*295)),(plafones4.get_price()*6),((plafones2.get_price()*(((largo/100)-1)*2)+4)),((((largo/100)-1)*2)*110),2500,math.ceil(p_usar*2)*p_precio,1560]
+                tot = [lam_precio_total,lam_peso_total*4.06,float(ptr4x2.get_pcs())*float(ptr4x2.get_price()),float(tubula1x1.get_pcs())*float(tubula1x1.get_price()),float(tubula.get_pcs())*float(tubula.get_price()),float(toldo_precio)*float((largo + 50)/100),float(angulo.get_pcs())*float(angulo.get_price()),((round((largo/122)*3)*295)),(plafones4.get_price()*6),(((plafones2.get_price()))*(((largo/100)-1)*3)),((((largo/100)-1)*2)*110),2500,math.ceil(p_usar*2)*p_precio,1560]
                 total = 0
 
                 for i in range(0,len(tot)):
@@ -591,7 +597,7 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
                     # [COMPLETAR]
                     ["Triplay 6mm.",round((largo/122)*3),"","{}".format(locale.currency(295)),"{}".format(locale.currency(tot[7],grouping=True))],
                     ["Plafones 4'' led.",6,"","{}".format(locale.currency(plafones4.get_price(),grouping=True)),"{}".format(locale.currency(tot[8],grouping=True))],
-                    ["[!] Plafones 2'' led. [!]","{}".format((largo/100)-1),"","{}".format(locale.currency(plafones2.get_price(),grouping=True)),"{} [!]".format(locale.currency(tot[9]/2,grouping=True))],
+                    ["Plafones 2'' led. ","{}".format(((largo/100)-1)*3),"","{}".format(locale.currency(plafones2.get_price(),grouping=True)),"{}".format(locale.currency(tot[9],grouping=True))],
                     ["Bragas 5/8.","{}".format(((largo/100)-1)*2),"","{}".format(locale.currency(110,grouping=True)),"{}".format(locale.currency(tot[10],grouping=True))],          
                     ["Vistas.","","","","{}".format(locale.currency(tot[11],grouping=True))],
                     ["Polin {}.".format(polin),"{}".format(math.ceil(p_usar*2)),"","{}".format(locale.currency(p_precio,grouping=True)),"{}".format(locale.currency((math.ceil(tot[12])),grouping=True))],   
@@ -674,16 +680,14 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio):
         cot()
         #print("Done")
         if messagebox.askyesno("Atención","Se ah cotizado una carroceria para caja seca {} copete para {} de {}mts. de alto, {}mts. de ancho y {}mts. de largo. \n ¿Desea abrirla?".format(cop,cam,alto/100,ancho/100,largo/100)):
-            
+            os.popen(abrir_esto.get_titulo())
+            root.destroy()
             WMI = GetObject('winmgmts:')
             processes = WMI.InstancesOf('Win32_Process')
 
             for p in WMI.ExecQuery('select * from Win32_Process where Name="cmd.exe"'):
                 p.Properties_('ProcessId').Value
                 os.system("taskkill /pid "+str(p.Properties_('ProcessId').Value))
-            
-                os.popen(abrir_esto.get_titulo())
-            root.destroy()
         else:
             root.destroy()
             WMI = GetObject('winmgmts:')

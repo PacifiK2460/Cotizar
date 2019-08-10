@@ -1,3 +1,4 @@
+
 from tkinter import *
 from tkinter import messagebox
 import subprocess
@@ -12,11 +13,10 @@ def editar_dat():
         subprocess.Popen("python C:/Users/trabajo/Desktop/Cotizar/cotizar-1/edit.pyw",shell=False)
 
 if __name__ == '__main__':
-    #Incio de ventana
+    #Incio de ventanaOR
     master = Tk()
     master.title("Inicio")
-    master.geometry("200x125") #Tam. original: 245x180
-    master.resizable(0,0)
+    master.geometry("200x125")
     master.iconbitmap("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/logo.ico")
 
     width = master.winfo_width() 

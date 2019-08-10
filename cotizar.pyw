@@ -41,11 +41,11 @@ def confirmar1(): #Confirma accion delusuar
 
         if continuar == True:
                 if v.get() == "Caja seca":
-                        if messagebox.askokcancel("Confirmar","Se contizara una {} {} copete para {}. \nTipo de precio: {}.\n\nAlto: {}\nAncho: {}\nLargo: {}".format(v.get().lower(),cop.get().lower(),c.get(),t_precio.get(),alto.get(),ancho.get(),large.get())):
+                        if messagebox.askokcancel("Confirmar","Se contizara una {} {} copete para {}. \nTipo de precio: {}. \nTipo de madera: {}.\n\nAlto: {}\nAncho: {}\nLargo: {}".format(v.get().lower(),cop.get().lower(),c.get(),t_precio.get(),tipo_madera.get(),alto.get(),ancho.get(),large.get())):
                                 window.destroy()
-                                imprimir_cot(cop.get(),c.get(),float(alto.get())*100,float(ancho.get())*100,float(large.get())*100,t_precio.get())
-                elif messagebox.askokcancel("Confirmar","Se contizara una {}. \nTipo de precio: {}.\n\nAncho: {}\nLargo: {}".format(v.get().lower(),t_precio.get(),ancho.get(),large.get())):
-                        window.destroy()
+                                imprimir_cot(cop.get(),c.get(),float(alto.get())*100,float(ancho.get())*100,float(large.get())*100,t_precio.get(),tipo_madera.get())
+                elif messagebox.askokcancel("Confirmar","Se contizara una {}. \nTipo de precio: {}.\nTipo de madera: {}.\n\nAncho: {}\nLargo: {}".format(v.get().lower(),t_precio.get(),tipo_madera.get(),ancho.get(),large.get())):
+                        messagebox.showerror("Error","Actualmente no se pueden cotizar plataformas.")
             
 
 def cg(): #Actualizar opcion de Alto segun Plataforma o Caja seca
@@ -63,12 +63,12 @@ def cg(): #Actualizar opcion de Alto segun Plataforma o Caja seca
         op4.grid(row=2,column=1)
         op3.grid_forget()
         op4.grid_forget()
-        window.geometry("245x280")
+        window.geometry("{}x{}".format(245,335))
 
     else:
         altoNo.config(state=NORMAL)
         altoCaja.config(state=NORMAL)
-        window.geometry("245x340")        
+        window.geometry("{}x{}".format(245,335+60))        
         conCopete.grid(row=1,column=0)
         sinCopete.grid(row=1,column=1)
 
@@ -82,9 +82,12 @@ if __name__ == '__main__':
 
         window = Tk()
         window.title("Cotizar")
-        window.geometry("245x280") #Tam. original: 245x180
+        ancho = 245
+        alto = 335
+        window.geometry("{}x{}".format(ancho,alto)) #Tam. original: 245x180
         window.resizable(0,0)
         window.iconbitmap("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/logo.ico")
+
 
         #centro de ventana
         width = window.winfo_width() 
@@ -102,11 +105,7 @@ if __name__ == '__main__':
         largeNo.grid(row=0,column=0)
         largeBox = Entry(labelframe,textvariable = large)
         largeBox.grid(row = 0, column = 1)
-        largeBox.focus()
 
-        ca = Canvas()
-        ca.update_idletasks()
-        ca.after(1000,window.update_idletasks())
         ancho = StringVar()
         anchoNo = Label(labelframe,text="Ancho: ",font=("Bold",17))
         anchoNo.grid(row=1,column=0)
@@ -120,8 +119,9 @@ if __name__ == '__main__':
         altoCaja.grid(row = 2, column = 1)
 
         #-----------------------------------------
+
         w = LabelFrame(window, text="Tipo")
-        w.pack(fill="both", expand="yes",padx=7,pady=1)
+        w.pack(fill="both", expand="no",padx=7,pady=1)
 
         v = StringVar()
         op1 = Radiobutton(w,text="Plataforma",font=("Bold",13),variable=v,value="Plataforma",command=cg)
@@ -136,18 +136,26 @@ if __name__ == '__main__':
         op4 = Radiobutton(w,text="Camioneta",font=("Bold",13),variable=c,value="camioneta",command=cg)
 
         p = LabelFrame(window,text="Precio")
-        p.pack(fill="both", expand="yes",padx=7,pady=1)
+        p.pack(fill="both", expand="no",padx=7,pady=1)
         t_precio = StringVar()
         econ = Radiobutton(p,text="Economica",font=("Bold",13),variable=t_precio,value="economica")
         normal = Radiobutton(p,text="Normal",font=("Bold",13),variable=t_precio,value="normal")
         econ.grid(row=0,column=0)
         normal.grid(row=0,column=1)
 
-        btn = Button(window,text="Siguiente",font=("Bold",13),fg="White",bg ="#4094da",command=confirmar1)
+        tipo_madera = StringVar()
+        ma = LabelFrame(window, text="Madera")
+        ma.pack(fill="both", expand="no",padx=7,pady=7)
+        ma_15 = Radiobutton(ma,text="Madera 1 ½",font=("Bold",12),variable=tipo_madera,value="madera 1 ½")
+        ma_78 = Radiobutton(ma,text="Madera 7/8",font=("Bold",12),variable=tipo_madera,value="madera 7/8")
+        ma_15.grid(row=0,column=0)
+        ma_78.grid(row=0,column=1)
+
+        btn = Button(window,text="Siguiente",font=("Bold",12),fg="White",bg ="#4094da",command=confirmar1)
         btn.pack(side=LEFT,padx=5,pady=5)
         salir = Button(window,text="Salir",font=("Bold",13),fg = "White",bg = "#e7513a",command=window.quit)
         salir.pack(side=RIGHT,padx=5,pady=5)
-        
+
         window.update()
         window.update_idletasks()
         window.mainloop() #Loop, ventana permanentemente escuchando el user's input
