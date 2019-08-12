@@ -27,11 +27,11 @@ def actualizar():
         else:
             root.destroy()
 
-f = open("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/idv.txt","r+") #Abre el archivo lee el ultimo numero y lo guarad en una variable
+f = open("idv.txt","r+") #Abre el archivo lee el ultimo numero y lo guarad en una variable
 idv = int(f.readline())
 f.close()
 
-for fl in glob.glob("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/idv.txt"):
+for fl in glob.glob("idv.txt"):
     os.remove(fl)
 
 data = pd.read_csv("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/datos.csv",index_col="ID")

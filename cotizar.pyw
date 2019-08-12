@@ -82,6 +82,7 @@ if __name__ == '__main__':
 
         window = Tk()
         window.title("Cotizar")
+        
         ancho = 245
         alto = 335
         window.geometry("{}x{}".format(ancho,alto)) #Tam. original: 245x180

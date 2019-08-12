@@ -46,7 +46,7 @@ if cont == True:
                 messagebox.showerror("Error","ID inexistente.")
                 print(objeto.get_id())
             else:
-                f = open("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/idv.txt","w+")
+                f = open("idv.txt","w+")
                 f.write(str(idv))
                 f.close()
                 window.destroy()

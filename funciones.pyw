@@ -181,23 +181,23 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio,t_madera):
         plafones4 = Plafones(149)
         plafones2 = Plafones(35)    
  
-    #    def print_rest():
-    #       if lamina3x10c12.get_lam() != 0:
-    #           #print("[!] [Info] 3x10 c12 = {}".format(lamina3x10c12.get_lam()))
-    #       if lamina3x10c14.get_lam() != 0:
-    #           #print("[!] [Info] 3x10 c14 = {}".format(lamina3x10c14.get_lam()))
-    #       if lamina3x8c12.get_lam() != 0:
-    #           #print("[!] [Info] 3x8 c12 = {}".format(lamina3x8c12.get_lam()))
-    #       if lamina3x8c14.get_lam() != 0:
-    #           #print("[!] [Info] 3x8 c14 = {}".format(lamina3x8c14.get_lam()))
-    #       if lamina4x10c12.get_lam() != 0:
-    #           #print("[!] [Info] 4x10 c12 = {}".format(lamina4x10c12.get_lam()))
-    #       if lamina4x10c14.get_lam() != 0:
-    #           #print("[!] [Info] 4x10 c14 = {}".format(lamina4x10c14.get_lam()))
-    #       if lamina4x8c12.get_lam() != 0:
-    #           #print("[!] [Info] 4x8 c12 = {}".format(lamina4x8c12.get_lam()))
-    #       if lamina4x8c14.get_lam() != 0:
-    #           #print("[!] [Info] 4x8 c14 = {}".format(lamina4x8c14.get_lam()))
+        #    def print_rest():
+        #       if lamina3x10c12.get_lam() != 0:
+        #           #print("[!] [Info] 3x10 c12 = {}".format(lamina3x10c12.get_lam()))
+        #       if lamina3x10c14.get_lam() != 0:
+        #           #print("[!] [Info] 3x10 c14 = {}".format(lamina3x10c14.get_lam()))
+        #       if lamina3x8c12.get_lam() != 0:
+        #           #print("[!] [Info] 3x8 c12 = {}".format(lamina3x8c12.get_lam()))
+        #       if lamina3x8c14.get_lam() != 0:
+        #           #print("[!] [Info] 3x8 c14 = {}".format(lamina3x8c14.get_lam()))
+        #       if lamina4x10c12.get_lam() != 0:
+        #           #print("[!] [Info] 4x10 c12 = {}".format(lamina4x10c12.get_lam()))
+        #       if lamina4x10c14.get_lam() != 0:
+        #           #print("[!] [Info] 4x10 c14 = {}".format(lamina4x10c14.get_lam()))
+        #       if lamina4x8c12.get_lam() != 0:
+        #           #print("[!] [Info] 4x8 c12 = {}".format(lamina4x8c12.get_lam()))
+        #       if lamina4x8c14.get_lam() != 0:
+        #           #print("[!] [Info] 4x8 c14 = {}".format(lamina4x8c14.get_lam()))
 
         #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_--
 
@@ -664,9 +664,6 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio,t_madera):
             else:
                 camion_con()
 
-        def final():
-            pass
-
     #Define your Progress Bar function, 
     def task(root):
         txt = Label(root,text="Creando y buscando archivo...",font=("Bold",14))
@@ -677,19 +674,27 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio,t_madera):
         root.mainloop()
 
     # Define the process of unknown duration with root as one of the input And once done, add root.quit() at the end.
-    def process_of_unknown_duration(root):
+    def funcion_indef(root):
         cot()
         #print("Done")
         if messagebox.askyesno("Atención","Se ah cotizado una carroceria para caja seca {} copete para {} de {}mts. de alto, {}mts. de ancho y {}mts. de largo. \n ¿Desea abrirla?".format(cop,cam,alto/100,ancho/100,largo/100)):
-            shutil.move(abrir_esto.get_titulo(),"Cotizaciones")
-            os.popen("{}/Cotizaciones/{}".format(os.getcwd(),abrir_esto.get_titulo()))
-            root.destroy()
-            WMI = GetObject('winmgmts:')
-            processes = WMI.InstancesOf('Win32_Process')
+            continuar = True
+            try:
+                shutil.move(abrir_esto.get_titulo(),"C:/Users/trabajo/Desktop/Cotizar/cotizar-1/Cotizaciones")
+            except:
+                messagebox.showerror("Error","La carpeta especifica ah sido movida o no puede usar.\n Por favor, intentelo de nuevo")
+                continuar = False
+            if continuar == True:
+                path ="C:/Users/trabajo/Desktop/Cotizar/cotizar-1//Cotizaciones/{}".format(abrir_esto.get_titulo())
+                os.popen(path)
+                root.destroy()
+                root.w
+                WMI = GetObject('winmgmts:')
+                processes = WMI.InstancesOf('Win32_Process')
 
-            for p in WMI.ExecQuery('select * from Win32_Process where Name="cmd.exe"'):
-                p.Properties_('ProcessId').Value
-                os.system("taskkill /pid "+str(p.Properties_('ProcessId').Value))
+                for p in WMI.ExecQuery('select * from Win32_Process where Name="cmd.exe"'):
+                    p.Properties_('ProcessId').Value
+                    os.system("taskkill /pid "+str(p.Properties_('ProcessId').Value))
         else:
             root.destroy()
             WMI = GetObject('winmgmts:')
@@ -701,7 +706,7 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio,t_madera):
 
     # Now define our Main Functions, which will first define root.
     # thn call for call for "task(root)" --- that's your progressbar.
-    # and then call for thread1 simultaneously which will execute your process_of_unknown_duration and at the end destroy/quit the root.
+    # and then call for thread1 simultaneously which will execute your funcion_indef and at the end destroy/quit the root.
     def Main():
         root = Tk()
         root.title("Creando y buscando archivo...")
@@ -717,7 +722,7 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio,t_madera):
         root.geometry('{}x{}+{}+{}'.format(width, height, x, y))
 
 
-        t1=threading.Thread(target=process_of_unknown_duration, args=(root,))
+        t1=threading.Thread(target=funcion_indef, args=(root,))
         t1.start()
         task(root)  # This will block while the mainloop runs
         t1.join()
