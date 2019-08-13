@@ -36,7 +36,6 @@ for fl in glob.glob("idv.txt"):
 
 data = pd.read_csv("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/datos.csv",index_col="ID")
 row = data.loc[idv]
-
 root=Tkinter.Tk()
 root.title("Edición de datos.")
 root.iconbitmap("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/logo.ico")

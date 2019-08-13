@@ -552,6 +552,8 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio,t_madera):
                 #print("largo / 487.68 = {}".format(polin16))
                 parte_decimal_p16, parte_entera_p16 = math.modf(polin16)
                 #print("P16D: {} | P16E: {}".format(parte_decimal_p16,parte_entera_p16))
+
+                continuar1 = True
                 
 
                 if parte_entera_p8 < parte_entera_p16 and parte_decimal_p8 < parte_decimal_p16:
@@ -575,8 +577,12 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio,t_madera):
                     p_usar = polin16
                     #print("P = {}\n PP = {}\nPU = {}".format(polin,p_precio,p_usar))
                 else:
-                    messagebox.showerror("Erro","Impossible.")
-                
+                    messagebox.showerror("Erro","Ah ocurrido un error con las medidas, por favor intentelo de nuevo o cambie las medidas.")
+                    continuar1 = False
+
+                if continuar1 == False:
+                    breakpoint
+
                 tot = [lam_precio_total,lam_peso_total*4.06,float(ptr4x2.get_pcs())*float(ptr4x2.get_price()),float(tubula1x1.get_pcs())*float(tubula1x1.get_price()),float(tubula.get_pcs())*float(tubula.get_price()),float(toldo_precio)*float((largo + 50)/100),float(angulo.get_pcs())*float(angulo.get_price()),((round((largo/122)*3)*295)),(plafones4.get_price()*6),(((plafones2.get_price()))*(((largo/100)-1)*3)),((((largo/100)-1)*2)*110),2500,math.ceil(p_usar*2)*p_precio,1560]
                 total = 0
 
@@ -720,7 +726,6 @@ def imprimir_cot(cop,cam,alto,ancho,largo,t_precio,t_madera):
         x = (root.winfo_screenwidth() // 2) - (width // 2) 
         y = (root.winfo_screenheight() // 2) - (height // 2) 
         root.geometry('{}x{}+{}+{}'.format(width, height, x, y))
-
 
         t1=threading.Thread(target=funcion_indef, args=(root,))
         t1.start()
