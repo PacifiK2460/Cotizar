@@ -17,6 +17,7 @@ if __name__ == '__main__':
     master = Tk()
     master.title("Inicio")
     master.geometry("200x125")
+    master.resizable(0,0)
     master.iconbitmap("C:/Users/trabajo/Desktop/Cotizar/cotizar-1/logo.ico")
 
     width = master.winfo_width() 
